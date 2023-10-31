@@ -29,9 +29,12 @@
 
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
+import androidx.annotation.NonNull;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
@@ -51,5 +54,38 @@ public class RobotHardware {
         frontRight = myOpMode.hardwareMap.get(DcMotorEx.class, "MotorFrontLeft");
         backLeft = myOpMode.hardwareMap.get(DcMotorEx.class, "MotorFrontLeft");
         frontLeft = myOpMode.hardwareMap.get(DcMotorEx.class, "MotorFrontLeft");
+    }
+    public void movement(@NonNull Gamepad gamepad1) {
+        double y = -gamepad1.left_stick_y;
+        double x;
+        if (gamepad1.left_stick_x < 0.25 && gamepad1.left_stick_x > -0.25) {
+            x = 0;
+        } else {
+            x = gamepad1.left_stick_x;
+        }
+        double rx = gamepad1.right_stick_x;
+
+        double frontLeftPower = y + x + rx;
+        double backLeftPower = y - x + rx;
+        double frontRightPower = y - x - rx;
+        double backRightPower = y + x - rx;
+
+        if (gamepad1.left_trigger!=0) {
+            frontRightPower *= 0.4;
+            frontLeftPower *= 0.4;
+            backRightPower *= 0.4;
+            backLeftPower *= 0.4;
+        } else if (gamepad1.right_trigger!=0) {
+            frontRightPower *= 0.6;
+            frontLeftPower *= 0.6;
+            backRightPower *= 0.6;
+            backLeftPower *= 0.6;
+
+        }
+
+        frontLeft.setPower(frontLeftPower);
+        backLeft.setPower(backLeftPower);
+        frontRight.setPower(frontRightPower);
+        backRight.setPower(backRightPower);
     }
 }
