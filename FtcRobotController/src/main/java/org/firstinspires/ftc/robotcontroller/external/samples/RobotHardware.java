@@ -32,10 +32,9 @@ package org.firstinspires.ftc.robotcontroller.external.samples;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
- * This file works in conjunction with the External Hardware Class sample called: ConceptExternalHardwareClass.java
- * Please read the explanations in that Sample about how to use this class definition.
+// * This file works in conjunction with the External Hardware Class sample called: ConceptExternalHardwareClass.java
+// * Please read the explanations in that Sample about how to use this class definition.
 /*
  *
  * This file defines a Java Class that performs all the setup and configuration for a sample robot's hardware (motors and sensors).
