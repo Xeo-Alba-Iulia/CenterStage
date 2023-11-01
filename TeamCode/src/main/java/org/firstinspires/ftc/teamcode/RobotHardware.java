@@ -27,33 +27,38 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
+
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
 import androidx.annotation.NonNull;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
+import com.qualcomm.hardware.HardwareDeviceManager;
+
 
 public class RobotHardware {
+    private final OpMode myOpMode;
+    public DcMotor frontLeft;
+    public DcMotor frontRight;
+    public DcMotor backLeft;
+    public DcMotor backRight;
 
-    public DcMotorEx frontLeft = null;
-    public DcMotorEx frontRight = null;
-    public DcMotorEx backLeft = null;
-    public DcMotorEx backRight = null;
-    public RobotHardware (LinearOpMode opmode) {
-        myOpMode = opmode;
-    }
+
+
+    public RobotHardware (OpMode opmode) {myOpMode = opmode;}
 
     public void init(){
         //Sasiu
-        frontLeft = myOpMode.hardwareMap.get(DcMotorEx.class, "MotorFrontLeft");
-        frontRight = myOpMode.hardwareMap.get(DcMotorEx.class, "MotorFrontLeft");
-        backLeft = myOpMode.hardwareMap.get(DcMotorEx.class, "MotorFrontLeft");
-        frontLeft = myOpMode.hardwareMap.get(DcMotorEx.class, "MotorFrontLeft");
+
+        frontLeft = hardwareMap.dcMotor.get("MotorFrontLeft");
+        frontRight = myOpMode.hardwareMap.dcMotor.get("MotorFrontRight");
+        backLeft = myOpMode.hardwareMap.dcMotor.get("MotorBackLeft");
+        backRight = myOpMode.hardwareMap.dcMotor.get("MotorBackRight");
     }
     public void movement(@NonNull Gamepad gamepad1) {
         double y = -gamepad1.left_stick_y;
