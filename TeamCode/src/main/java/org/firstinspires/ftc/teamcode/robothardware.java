@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
-import org.firstinspires.ftc.teamcode.sisteme.vfb;
+import org.firstinspires.ftc.teamcode.sisteme.VirtualFourBar;
 public class robothardware {
     private final OpMode myOpMode;
     public DcMotor frontLeft;
@@ -20,10 +20,14 @@ public class robothardware {
 
 
     public Servo geara;
-    public Servo vfb1;
-    public Servo vfb2;
+    public ServoImplEx vfb1;
+    public ServoImplEx vfb2;
 
 
+    public final double vfb_intake = 0.1;
+    public final double vfb_outake=0.8;
+
+    public VirtualFourBar virtualFourBar;
 
     public robothardware(OpMode opmode) {myOpMode = opmode;}
 
@@ -38,8 +42,9 @@ public class robothardware {
         intec = myOpMode.hardwareMap.dcMotor.get("Intec");
         ridicare1 = myOpMode.hardwareMap.dcMotor.get("Ridicare1");
         ridicare2 = myOpMode.hardwareMap.dcMotor.get("Ridicare2");
-        vfb1 = myOpMode.hardwareMap.servo.get("VFB1");
-        vfb2 = myOpMode.hardwareMap.servo.get("VFB2");
+        vfb1 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb1");
+        vfb2 = myOpMode.hardwareMap.get(ServoImplEx.class,"vfb2");
+        virtualFourBar = new VirtualFourBar(vfb1,vfb2);
     }
     public void movement(Gamepad gamepad1) {
         double y = -gamepad1.left_stick_y;

@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.sisteme;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
-public class vfb {
+public class VirtualFourBar {
     ServoImplEx vFB1, vFB2;
     public VirtualFourBar(ServoImplEx vFB1, ServoImplEx vFB2) {
         this.vFB1 = vFB1;

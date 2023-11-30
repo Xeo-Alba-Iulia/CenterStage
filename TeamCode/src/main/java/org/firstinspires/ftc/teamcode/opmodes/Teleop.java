@@ -41,12 +41,10 @@ public class Teleop extends OpMode {
         if(gamepad2.a)
             robot.geara.setPosition(0.2);
         if(gamepad1.left_bumper) {
-            robot.vfb1.setPosition(-1);
-            robot.vfb2.setPosition(1);
+            robot.virtualFourBar.setPosition(robot.vfb_intake);
         }
         if(gamepad1.right_bumper) {
-            robot.vfb1.setPosition(0);
-            robot.vfb2.setPosition(0);
+            robot.virtualFourBar.setPosition(robot.vfb_outake);
         }
     }
 
