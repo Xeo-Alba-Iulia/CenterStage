@@ -1,33 +1,55 @@
-package org.firstinspires.ftc.teamcode.opmodes;
+package org.firstinspires.ftc.teamcode;
 
-import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.common.commands.DriveCommand;
-import org.firstinspires.ftc.teamcode.common.subsystems.DrivetrainSubsystem;
+@TeleOp(name = "TeleOP", group = "A")
+public class Teleop extends OpMode {
 
-@TeleOp
-public class Teleop extends CommandOpMode {
+    robothardware robot = new robothardware(this);
+
 
     @Override
-    public void initialize() {
+    public void init(){
+        robot.init();
+        robot.geara.setPosition(0);
+        robot.vfb1.setPosition(0);
+        robot.vfb2.setPosition(0);
 
-        GamepadEx driverOp = new GamepadEx(gamepad1);
-        GamepadEx toolsop = new GamepadEx(gamepad2);
 
+    }
+    public void loop() {
 
-        DrivetrainSubsystem drive = new DrivetrainSubsystem(
-                new MotorEx(hardwareMap, "frontLeft", Motor.GoBILDA.RPM_435),
-                new MotorEx(hardwareMap, "frontRight", Motor.GoBILDA.RPM_435),
-                new MotorEx(hardwareMap, "backLeft", Motor.GoBILDA.RPM_435),
-                new MotorEx(hardwareMap, "backRi`ght", Motor.GoBILDA.RPM_435)
-        );
-        DriveCommand driveCommand = new DriveCommand(drive,
-                driverOp::getLeftY, driverOp::getLeftX, driverOp::getRightX);
-        drive.setDefaultCommand(driveCommand);
+        robot.movement(gamepad1);
+//
+        if (gamepad1.a)
+            robot.intec.setPower(0.8);
+
+        if (gamepad1.b)
+            robot.intec.setPower(-0.8);
+        if(gamepad1.y)
+            robot.intec.setPower(0);
+
+        robot.ridicare1.setPower(gamepad2.right_trigger);
+        robot.ridicare2.setPower(-gamepad2.right_trigger);
+
+        robot.ridicare1.setPower(-gamepad2.left_trigger);
+        robot.ridicare2.setPower(gamepad2.left_trigger);
+
+        if(gamepad2.b)
+            robot.geara.setPosition(0.4);
+        if(gamepad2.a)
+            robot.geara.setPosition(0.2);
+        if(gamepad1.left_bumper) {
+            robot.vfb1.setPosition(-1);
+            robot.vfb2.setPosition(1);
+        }
+        if(gamepad1.right_bumper) {
+            robot.vfb1.setPosition(0);
+            robot.vfb2.setPosition(0);
+        }
     }
 
-}
+
+
+    }
