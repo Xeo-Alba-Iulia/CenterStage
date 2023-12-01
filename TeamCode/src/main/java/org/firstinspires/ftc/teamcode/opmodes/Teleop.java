@@ -8,9 +8,11 @@ public class Teleop extends OpMode {
 
     robothardware robot = new robothardware(this);
 
+    boolean right_bumper_pressed = false;
+
 
     @Override
-    public void init(){
+    public void init() {
         robot.init();
         robot.geara.setPosition(0);
         robot.vfb1.setPosition(0);
@@ -18,6 +20,7 @@ public class Teleop extends OpMode {
 
 
     }
+
     public void loop() {
 
         robot.movement(gamepad1);
@@ -27,27 +30,46 @@ public class Teleop extends OpMode {
 
         if (gamepad1.b)
             robot.intec.setPower(-0.8);
-        if(gamepad1.y)
+        if (gamepad1.y)
             robot.intec.setPower(0);
 
-        robot.ridicare1.setPower(gamepad2.right_trigger);
-        robot.ridicare2.setPower(-gamepad2.right_trigger);
 
-        robot.ridicare1.setPower(-gamepad2.left_trigger);
-        robot.ridicare2.setPower(gamepad2.left_trigger);
+        robot.ridicare1.setPower(gamepad1.right_trigger);
+        robot.ridicare2.setPower(-gamepad1.right_trigger);
 
-        if(gamepad2.b)
-            robot.geara.setPosition(0.4);
-        if(gamepad2.a)
-            robot.geara.setPosition(0.2);
-        if(gamepad1.left_bumper) {
+        robot.ridicare1.setPower(-gamepad1.left_trigger);
+        robot.ridicare2.setPower(gamepad1.left_trigger);
+
+        //gheara
+        if(gamepad1.right_bumper) {
+            robot.geara.setPosition(1);
+        } else {
+            robot.geara.setPosition(0);
+        }
+
+        //ridicare
+        if (gamepad1.right_trigger > 0) {
+            robot.ridicare1.setPower(0.3);
+            robot.ridicare1.setPower(-0.3);
+        } else {
+            robot.ridicare1.setPower(0);
+        }
+        if (gamepad1.left_trigger > 0) {
+            robot.ridicare1.setPower(-0.3);
+            robot.ridicare1.setPower(0.3);
+        } else {
+            robot.ridicare2.setPower(0);
+        }
+
+
+        //vfb cica
+        if (gamepad1.left_bumper) {
             robot.virtualFourBar.setPosition(robot.vfb_intake);
         }
-        if(gamepad1.right_bumper) {
-            robot.virtualFourBar.setPosition(robot.vfb_outake);
-        }
+
+        ///ii ora 1 si imi bag imbusu-n el cod #graciuosly
+        telemetry.addData("geara pos", robot.geara.getPosition());
+        telemetry.addData("bool", right_bumper_pressed);
+        telemetry.update();
     }
-
-
-
-    }
+}
