@@ -63,9 +63,9 @@ public class Teleop extends OpMode {
 
 
         //vfb cica
-        if (gamepad1.left_bumper) {
-            robot.virtualFourBar.setPosition(robot.vfb_intake);
-        }
+//        if (gamepad1.left_bumper) {
+//            robot.virtualFourBar.setPosition(robot.vfb_intake);
+//        }
 
         ///ii ora 1 si imi bag imbusu-n el cod #graciuosly
         telemetry.addData("geara pos", robot.geara.getPosition());
