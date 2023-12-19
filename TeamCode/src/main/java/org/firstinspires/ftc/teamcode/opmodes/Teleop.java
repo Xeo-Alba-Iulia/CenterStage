@@ -15,61 +15,70 @@ public class Teleop extends OpMode {
     public void init() {
         robot.init();
         robot.geara.setPosition(0);
-        robot.vfb1.setPosition(0);
-        robot.vfb2.setPosition(0);
+        robot.vFB1.setPosition(0);
+        robot.vFB2.setPosition(0);
+        robot.aligner.setPosition(0);
 
+    }
+    private void miscaremanuala()  {
+        if(gamepad2.dpad_left) {
+            robot.ringhiman += 0.005;
+            robot.vFB1.setPosition(robot.ringhiman);
+        }
+        else if(gamepad2.dpad_right) {
+            robot.ringhiman -= 0.005;
+            robot.virtualFourBar.setPosition(robot.ringhiman);
+        }
 
     }
 
     public void loop() {
 
         robot.movement(gamepad1);
-//
-        if (gamepad1.a)
-            robot.intec.setPower(0.8);
+        miscaremanuala();
 
-        if (gamepad1.b)
-            robot.intec.setPower(-0.8);
-        if (gamepad1.y)
+        if (gamepad2.a)
+            robot.intec.setPower(0.85);
+
+        if (gamepad2.b)
+            robot.intec.setPower(-0.85);
+        if (gamepad2.y)
             robot.intec.setPower(0);
 
 
-        robot.ridicare1.setPower(gamepad1.right_trigger);
-        robot.ridicare2.setPower(-gamepad1.right_trigger);
+        robot.ridicare1.setPower(gamepad2.right_trigger);
+        robot.ridicare2.setPower(gamepad2.right_trigger);
 
-        robot.ridicare1.setPower(-gamepad1.left_trigger);
-        robot.ridicare2.setPower(gamepad1.left_trigger);
+        robot.ridicare1.setPower(-gamepad2.left_trigger);
+        robot.ridicare2.setPower(-gamepad2.left_trigger);
 
-        //gheara
+
         if(gamepad1.right_bumper) {
-            robot.geara.setPosition(1);
+            robot.geara.setPosition(0.8);
         } else {
             robot.geara.setPosition(0);
         }
 
-        //ridicare
-        if (gamepad1.right_trigger > 0) {
-            robot.ridicare1.setPower(0.3);
-            robot.ridicare1.setPower(-0.3);
-        } else {
-            robot.ridicare1.setPower(0);
+        if(gamepad2.dpad_up){
+            robot.virtualFourBar.setPosition(robot.vfb_outake);
+            robot.aligner.setPosition(robot.aligner_outake);
         }
-        if (gamepad1.left_trigger > 0) {
-            robot.ridicare1.setPower(-0.3);
-            robot.ridicare1.setPower(0.3);
-        } else {
-            robot.ridicare2.setPower(0);
+        if(gamepad2.dpad_down){
+            robot.virtualFourBar.setPosition(robot.vfb_intake);
+            robot.aligner.setPosition(robot.aligner_intake);
         }
 
 
-        //vfb cica
-//        if (gamepad1.left_bumper) {
-//            robot.virtualFourBar.setPosition(robot.vfb_intake);
-//        }
+
+
+
+
 
         ///ii ora 1 si imi bag imbusu-n el cod #graciuosly
-        telemetry.addData("geara pos", robot.geara.getPosition());
+        telemetry.addData("vfb pos", robot.virtualFourBar.getPosition());
+        telemetry.addData("geara pos", robot.intec.getCurrentPosition());
         telemetry.addData("bool", right_bumper_pressed);
+        telemetry.addData("pos aligner",robot.aligner.getPosition());
         telemetry.update();
     }
 }

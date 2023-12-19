@@ -10,10 +10,11 @@ public class VirtualFourBar {
 
     public void setPosition(double position) {
         vFB1.setPosition(position);
-        vFB2.setPosition(1-position);
+        vFB2.setPosition(position);
     }
 
     public double getPosition() {
+
         return vFB1.getPosition();
     }
 }

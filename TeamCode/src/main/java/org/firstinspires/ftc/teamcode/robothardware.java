@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 import org.firstinspires.ftc.teamcode.sisteme.VirtualFourBar;
+
 public class robothardware {
     private final OpMode myOpMode;
     public DcMotor frontLeft;
@@ -16,16 +17,19 @@ public class robothardware {
     public DcMotor intec;
     public DcMotor ridicare1;
     public DcMotor ridicare2;
-
+    public Servo aligner;
 
 
     public Servo geara;
-    public ServoImplEx vfb1;
-    public ServoImplEx vfb2;
+    public ServoImplEx vFB1;
+    public ServoImplEx vFB2;
 
 
-    public final double vfb_intake = 0.1;
-    public final double vfb_outake=0.8;
+    public final double aligner_outake = 0.58;
+    public final double aligner_intake = 0;
+    public final double vfb_intake = 0;
+    public final double vfb_outake=0.71;
+    public double ringhiman = 0.71;
 
     public VirtualFourBar virtualFourBar;
 
@@ -40,11 +44,16 @@ public class robothardware {
         backRight = myOpMode.hardwareMap.dcMotor.get("MotorBackRight");
         geara = myOpMode.hardwareMap.servo.get("Claw");
         intec = myOpMode.hardwareMap.dcMotor.get("Intec");
+        aligner = myOpMode.hardwareMap.servo.get("Aligner");
         ridicare1 = myOpMode.hardwareMap.dcMotor.get("Ridicare1");
         ridicare2 = myOpMode.hardwareMap.dcMotor.get("Ridicare2");
-        vfb1 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb1");
-        vfb2 = myOpMode.hardwareMap.get(ServoImplEx.class,"vfb2");
-        virtualFourBar = new VirtualFourBar(vfb1,vfb2);
+        vFB1 = myOpMode.hardwareMap.get(ServoImplEx.class, "vfb1");
+        vFB2 = myOpMode.hardwareMap.get(ServoImplEx.class,"vfb2");
+        virtualFourBar = new VirtualFourBar(vFB1,vFB2);
+        vFB1.setDirection(Servo.Direction.REVERSE);
+        vFB2.setDirection(Servo.Direction.REVERSE);
+
+
     }
     public void movement(Gamepad gamepad1) {
         double y = -gamepad1.left_stick_y;
@@ -56,22 +65,16 @@ public class robothardware {
         }
         double rx = gamepad1.right_stick_x;
 
-        double frontLeftPower = y - x + rx;
-        double backLeftPower = y + x + rx;
-        double frontRightPower = -y - x + rx;
-        double backRightPower = -y + x + rx;
+        double frontLeftPower = -y - x - rx;
+        double backLeftPower = y - x + rx;
+        double frontRightPower =- y + x + rx;
+        double backRightPower = -y - x + rx;
 
-        if (gamepad1.left_trigger!=0) {
-            frontRightPower *= 0.4;
-            frontLeftPower *= 0.4;
-            backRightPower *= 0.4;
-            backLeftPower *= 0.4;
-        } else if (gamepad1.right_trigger!=0) {
-            frontRightPower *= 0.6;
-            frontLeftPower *= 0.6;
-            backRightPower *= 0.6;
-            backLeftPower *= 0.6;
-
+        if (gamepad1.left_bumper) {
+            frontRightPower *= 0.2 ;
+            frontLeftPower *= 0.2;
+            backRightPower *= 0.2;
+            backLeftPower *= 0.2;
         }
 
         frontLeft.setPower(frontLeftPower);
