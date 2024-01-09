@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import org.firstinspires.ftc.teamcode.robothardware;
 
 @TeleOp(name = "TeleOP", group = "A")
 public class Teleop extends OpMode {
@@ -20,37 +21,42 @@ public class Teleop extends OpMode {
         robot.aligner.setPosition(0);
 
     }
-    private void miscaremanuala()  {
-        if(gamepad2.dpad_left) {
+    private void miscaremanuala() {
+        if (gamepad2.dpad_left) {
             robot.ringhiman += 0.005;
             robot.vFB1.setPosition(robot.ringhiman);
-        }
-        else if(gamepad2.dpad_right) {
+        } else if (gamepad2.dpad_right) {
             robot.ringhiman -= 0.005;
             robot.virtualFourBar.setPosition(robot.ringhiman);
         }
+    }
+    private void intake(){
+            if (gamepad2.a)
+                robot.intec.setPower(0.85);
 
+            if (gamepad2.b)
+                robot.intec.setPower(-0.85);
+            if (gamepad2.y)
+                robot.intec.setPower(0);
+        }
+    private void ridicare(){
+        robot.ridicare1.setPower(gamepad2.right_trigger);
+        robot.ridicare2.setPower(gamepad2.right_trigger);
+
+        robot.ridicare1.setPower(-gamepad2.left_trigger);
+        robot.ridicare2.setPower(-gamepad2.left_trigger);
     }
 
     public void loop() {
 
         robot.movement(gamepad1);
         miscaremanuala();
-
-        if (gamepad2.a)
-            robot.intec.setPower(0.85);
-
-        if (gamepad2.b)
-            robot.intec.setPower(-0.85);
-        if (gamepad2.y)
-            robot.intec.setPower(0);
+        intake();
+        ridicare();
 
 
-        robot.ridicare1.setPower(gamepad2.right_trigger);
-        robot.ridicare2.setPower(gamepad2.right_trigger);
 
-        robot.ridicare1.setPower(-gamepad2.left_trigger);
-        robot.ridicare2.setPower(-gamepad2.left_trigger);
+
 
 
         if(gamepad1.right_bumper) {
