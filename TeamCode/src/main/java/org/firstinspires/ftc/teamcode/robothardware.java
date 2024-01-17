@@ -1,12 +1,18 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
+import android.graphics.Camera;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.sisteme.VirtualFourBar;
+import org.firstinspires.ftc.vision.VisionPortal;
 
 public class robothardware {
     private final OpMode myOpMode;
@@ -31,6 +37,7 @@ public class robothardware {
     public final double vfb_outake=0.71;
     public double ringhiman = 0.71;
 
+
     public VirtualFourBar virtualFourBar;
 
     public robothardware(OpMode opmode) {myOpMode = opmode;}
@@ -52,6 +59,7 @@ public class robothardware {
         virtualFourBar = new VirtualFourBar(vFB1,vFB2);
         vFB1.setDirection(Servo.Direction.REVERSE);
         vFB2.setDirection(Servo.Direction.REVERSE);
+
 
 
 

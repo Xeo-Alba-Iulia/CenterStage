@@ -2,7 +2,13 @@ package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.robothardware;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+
+
 
 @TeleOp(name = "TeleOP", group = "A")
 public class Teleop extends OpMode {
@@ -10,15 +16,21 @@ public class Teleop extends OpMode {
     robothardware robot = new robothardware(this);
 
     boolean right_bumper_pressed = false;
+    private org.firstinspires.ftc.robotcore.external.Telemetry Telemetry;
 
 
     @Override
     public void init() {
-        robot.init();
-        robot.geara.setPosition(0);
-        robot.vFB1.setPosition(0);
-        robot.vFB2.setPosition(0);
-        robot.aligner.setPosition(0);
+//        robot.init();
+//        robot.geara.setPosition(0);
+//        robot.vFB1.setPosition(0);
+//        robot.vFB2.setPosition(0);
+//        robot.aligner.setPosition(0);
+
+        OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
+
+
+
 
     }
     private void miscaremanuala() {
@@ -53,7 +65,6 @@ public class Teleop extends OpMode {
         miscaremanuala();
         intake();
         ridicare();
-
 
 
 
