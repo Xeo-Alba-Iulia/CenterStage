@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.RobotHardware;
 import org.firstinspires.ftc.teamcode.robothardware;
 
 
@@ -21,11 +19,15 @@ public class parcaresimpla extends LinearOpMode {
             return;
         }
         time.reset();
-        while(time.seconds() < 0.8) {
+        while(time.seconds() < 1) {
             robot.frontRight.setPower(-0.5);
             robot.frontLeft.setPower(-0.5);
-            robot.backLeft.setPower(0.5);
-            robot.backRight.setPower(-0.5);
+            robot.backLeft.setPower(-0.5);
+            robot.backRight.setPower(0.5);
+        }
+
+        while (time.seconds()<2){
+            robot.intec.setPower(-0.7);
         }
     }
 
