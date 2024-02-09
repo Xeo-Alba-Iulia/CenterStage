@@ -32,16 +32,15 @@ public class robothardware {
     public ServoImplEx pend2;
 
 //pozitii aligner caseta
-    public final double aligner_outake1 = 0.7;
+    public final double aligner_outake1 = 0.72;
     public final double aligner_outake2 = 0.7;
     public final double aligner_outake3 = 0.7;
     public final double aligner_intake = 0;
     //pozitii pendul
-    public final double pendul_outtake1 = 0.8;
+    public final double pendul_outtake1 = 0.6;
     public final double pendul_outtake2 = 0.8;
     public final double pendul_outtake3 = 0.8;
-
-    public final double pendul_intake = 0;
+    public final double pendul_intake = 0.018 ;
 
     public Spanzurare hanging;
     public Ridicare lift;
@@ -72,10 +71,13 @@ public class robothardware {
         lift = new Ridicare(ridicare1,ridicare2);
         hanging = new Spanzurare(spanzurare);
         plane.setDirection(Servo.Direction.REVERSE);
-        pend1.setDirection(Servo.Direction.REVERSE);
-        pend2.setDirection(Servo.Direction.REVERSE);
 
+        pend2.setDirection(Servo.Direction.REVERSE);
+        pend1.setDirection(Servo.Direction.REVERSE);
         al1.setDirection(Servo.Direction.REVERSE);
+
+
+
 
 
 
@@ -88,18 +90,19 @@ public class robothardware {
         } else {
             x = gamepad1.left_stick_x;
         }
+
         double rx = gamepad1.right_stick_x;
 
         double frontLeftPower = -y - x - rx;
         double backLeftPower = -y + x - rx;
-        double frontRightPower = -y + x + rx;
+        double frontRightPower = y - x - rx;
         double backRightPower = y + x - rx;
 
         if (gamepad1.left_bumper) {
-            frontRightPower *= 0.2 ;
-            frontLeftPower *= 0.2;
-            backRightPower *= 0.2;
-            backLeftPower *= 0.2;
+            frontRightPower *= 0.3 ;
+            frontLeftPower *= 0.3;
+            backRightPower *= 0.3;
+            backLeftPower *= 0.3;
         }
 
         frontLeft.setPower(frontLeftPower);

@@ -175,7 +175,7 @@ public class TGERecognition extends OpenCvPipeline {
             Imgproc.rectangle(HSV, region3_pointA,region3_pointB,new Scalar(250,0,0),3);
         }
 
-        return HSV ;
+        return HSV;
     }
     public TGEPosition getAnalysis()
     {
