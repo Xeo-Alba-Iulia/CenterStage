@@ -22,31 +22,31 @@ public class PozitiiServo extends LinearOpMode {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         Telemetry dashboardTelemetry = dashboard.getTelemetry();
         robot.init();
-        robot.pendulare.setPosition(0);
-        robot.aligner.setPosition(0);
-        robot.plane.setPosition(0);
-        robot.usa.setPosition(0);
+//        robot.pendulare.setPosition(0);
+//        robot.aligner.setPosition(0);
+//        robot.plane.setPosition(0);
+//        robot.usa.setPosition(0);
 
 
         waitForStart();
 
         if(isStopRequested()) return;
         while (opModeIsActive()){
-            robot.pendulare.setPosition(pozitie_pendul);
-            robot.aligner.setPosition(pozitie_aligner);
-            robot.plane.setPosition(pozitie_aveon);
-            robot.usa.setPosition(pozitie_usa);
-            dashboardTelemetry.addData("Pozitie Pendul",robot.pendulare.getPosition());
-            dashboardTelemetry.addData("Pozitie Aligmer",robot.aligner.getPosition());
-            dashboardTelemetry.addData("Pozitie Avion", robot.plane.getPosition());
-            dashboardTelemetry.addData("Pozitie Usa",robot.usa.getPosition());
+//            robot.pendulare.setPosition(pozitie_pendul);
+//            robot.aligner.setPosition(pozitie_aligner);
+//            robot.plane.setPosition(pozitie_aveon);
+//            robot.usa.setPosition(pozitie_usa);
+//            dashboardTelemetry.addData("Pozitie Pendul",robot.pendulare.getPosition());
+//            dashboardTelemetry.addData("Pozitie Aligmer",robot.aligner.getPosition());
+//            dashboardTelemetry.addData("Pozitie Avion", robot.plane.getPosition());
+//            dashboardTelemetry.addData("Pozitie Usa",robot.usa.getPosition());
             dashboardTelemetry.update();
-            if (gamepad1.a)
-                robot.intec.setPower(1);
-            else if (gamepad2.b)
-                robot.intec.setPower(-1);
-            else
-                robot.intec.setPower(0);
+//            if (gamepad1.a)
+//                robot.intec.setPower(1);
+//            else if (gamepad2.b)
+//                robot.intec.setPower(-1);
+//            else
+//                robot.intec.setPower(0);
 
         }
     }

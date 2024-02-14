@@ -10,9 +10,9 @@ public class Ridicare {
     public PIDController controller;
 
     //pozitii ridicare
-    public static final int POS_1 = 2300;
-    public static final int POS_2 = 4600;
-    public static final int POS_3 = 6900;
+    public static final int POS_1 = 2300; //-8432
+    public static final int POS_2 = 4600; //-19000
+    public static final int POS_3 = 6900; // -34000
     public int target;
 
     public Ridicare (DcMotor ridicare1, DcMotor ridicare2) {

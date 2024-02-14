@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.ochi.pipelines.TGERecognition;
+import org.firstinspires.ftc.teamcode.ochi.pipelines.TGERecognition_Red;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -18,8 +18,8 @@ public class albastruAproape extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     OpenCvCamera webcam;
-    TGERecognition pipeline;
-    TGERecognition.TGEPosition snapshotAnlysis = TGERecognition.TGEPosition.RIGHT;
+    TGERecognition_Red pipeline;
+    TGERecognition_Red.TGEPosition snapshotAnlysis = TGERecognition_Red.TGEPosition.RIGHT;
 
     TrajectorySequence spikemark;
     TrajectorySequence albastru_stanga;
@@ -28,7 +28,7 @@ public class albastruAproape extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        pipeline = new TGERecognition();
+        pipeline = new TGERecognition_Red();
         webcam.setPipeline(pipeline);
 
         Pose2d startPose = new Pose2d(-62, -35, Math.toRadians(0));
@@ -40,7 +40,7 @@ public class albastruAproape extends LinearOpMode {
             @Override
             public void onOpened()
             {
-                webcam.startStreaming(320,240, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(640,480, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -55,9 +55,9 @@ public class albastruAproape extends LinearOpMode {
             sleep(50);
         }
         albastru_stanga = drive.trajectorySequenceBuilder(startPose)
-                .splineToLinearHeading(new Pose2d(31, 10, Math.toRadians(0)), Math.toRadians(0))
-                .back(10)
-                .lineToLinearHeading(new Pose2d(18, 46.1, Math.toRadians(-90)))
+//                .splineToLinearHeading(new Pose2d(31, 10, Math.toRadians(0)), Math.toRadians(0))
+//                .back(10)
+//                .lineToLinearHeading(new Pose2d(18, 46.1, Math.toRadians(-90)))
                 .build();
 
 //        pipeline.processFrame();

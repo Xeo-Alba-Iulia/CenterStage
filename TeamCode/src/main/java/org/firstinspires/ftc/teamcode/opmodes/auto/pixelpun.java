@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.ochi.pipelines.TGERecognition;
+import org.firstinspires.ftc.teamcode.ochi.pipelines.TGERecognition_Red;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -15,8 +15,8 @@ public class pixelpun extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     OpenCvCamera webcam;
-    TGERecognition pipeline;
-    TGERecognition.TGEPosition snapshotAnlysis = TGERecognition.TGEPosition.RIGHT;
+    TGERecognition_Red pipeline;
+    TGERecognition_Red.TGEPosition snapshotAnlysis = TGERecognition_Red.TGEPosition.RIGHT;
 
 
     @Override
@@ -24,7 +24,7 @@ public class pixelpun extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        pipeline = new TGERecognition();
+        pipeline = new TGERecognition_Red();
         webcam.setPipeline(pipeline);
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
