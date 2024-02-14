@@ -2,92 +2,130 @@ package org.firstinspires.ftc.teamcode.opmodes.auto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.ochi.pipelines.TGERecognition_Red;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDriveTeleOP;
+import org.firstinspires.ftc.teamcode.ochi.pipelines.TGERecognition_blue;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.utilities.PoseStorage;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous
-public class albastruAproape extends LinearOpMode {
+@Autonomous(group = "A", preselectTeleOp = "TeleOP")
+
+public class albastruAproape extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     OpenCvCamera webcam;
-    TGERecognition_Red pipeline;
-    TGERecognition_Red.TGEPosition snapshotAnlysis = TGERecognition_Red.TGEPosition.RIGHT;
+    TGERecognition_blue pipeline;
+    TGERecognition_blue.TGEPosition snapshotAnlysis;
 
-    TrajectorySequence spikemark;
-    TrajectorySequence albastru_stanga;
+    SampleMecanumDriveTeleOP drive;
+    TrajectorySequence cazCentru;
+    Pose2d startPose;
+    TrajectorySequence cazStanga;
+    TrajectorySequence cazDreapta;
+
     @Override
-    public void runOpMode() throws InterruptedException {
-
+    public void init() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        pipeline = new TGERecognition_Red();
+        pipeline = new TGERecognition_blue();
         webcam.setPipeline(pipeline);
+        drive = new SampleMecanumDriveTeleOP(hardwareMap);
 
-        Pose2d startPose = new Pose2d(-62, -35, Math.toRadians(0));
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        drive.setPoseEstimate(startPose);
+        startPose = new Pose2d(0, 0, 0);
+//        telemetry.addData("Cazull", snapshotAnlysis);
 
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+
+//
+//
+
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
-                webcam.startStreaming(640,480, OpenCvCameraRotation.UPRIGHT);
+            public void onOpened() {
+                webcam.startStreaming(640, 480, OpenCvCameraRotation.UPRIGHT);//544x288
             }
 
             @Override
-            public void onError(int errorCode) {}
+            public void onError(int errorCode) {
+            }
         });
-        while (!isStarted() && !isStopRequested())
-        {
-            telemetry.addData("Realtime analysis", pipeline.getAnalysis());
-            telemetry.update();
 
-            // Don't burn CPU cycles busy-looping in this sample
-            sleep(50);
+//        telemetry.addData("Cazul",pipeline.getAnalysis());
+
+    }
+    public void init_loop(){
+        telemetry.addData("Cazul",pipeline.getAnalysis());
+        telemetry.update();
+    }
+    @Override
+    public void start() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
-        albastru_stanga = drive.trajectorySequenceBuilder(startPose)
-//                .splineToLinearHeading(new Pose2d(31, 10, Math.toRadians(0)), Math.toRadians(0))
-//                .back(10)
-//                .lineToLinearHeading(new Pose2d(18, 46.1, Math.toRadians(-90)))
-                .build();
+        snapshotAnlysis = pipeline.getAnalysis();
 
-//        pipeline.processFrame();
-        waitForStart();
-        runtime.reset();
+        switch (snapshotAnlysis) {
 
-        while (opModeIsActive()) {
-            snapshotAnlysis = pipeline.getAnalysis();
-            telemetry.addLine(snapshotAnlysis.toString());
-            switch (snapshotAnlysis) {
+            case LEFT: {
+                Pose2d offset = new Pose2d(12, 60, Math.toRadians(270));
+                drive.setPoseEstimate(offset);
 
-                case LEFT: {
-                    drive.followTrajectorySequence(albastru_stanga);
-                    break;
-                }
+                cazStanga = drive.trajectorySequenceBuilder(startPose.plus(offset))
+                        .lineToLinearHeading(new Pose2d(13, 35, Math.toRadians(360-30)))
+                        .back(3)
+                        .lineToLinearHeading(new Pose2d(24,60,Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(46,40,Math.toRadians(180)))
+                        .strafeLeft(5)
+                        .build();
+                drive.followTrajectorySequence(cazStanga);
+                telemetry.addLine("Stanga");
 
-                case RIGHT: {
-                    telemetry.addLine("merge pe dreapta");
-                    break;
-                }
-
-                case CENTER: {
-                    telemetry.addLine("merge numa ca pe mijloc");
-                    break;
-                }
-                default:{
-                    telemetry.addLine("ceva");
-                }
+                break;
             }
 
+            case RIGHT: {
+                Pose2d offset = new Pose2d(12, 60, Math.toRadians(270));
+                drive.setPoseEstimate(offset);
+
+                cazDreapta = drive.trajectorySequenceBuilder(startPose.plus(offset))
+                        .lineToLinearHeading(new Pose2d(8.4, 35, Math.toRadians(200)))
+                        .back(5)
+                        .build();
+                drive.followTrajectorySequence(cazDreapta);
+                telemetry.addData("Cazul",snapshotAnlysis );
+                break;
+            }
+
+            case CENTER: {
+                Pose2d offset = new Pose2d(12, 60, Math.toRadians(270));
+                drive.setPoseEstimate(offset);
+                cazCentru = drive.trajectorySequenceBuilder(startPose.plus(offset))
+                        .forward(27)
+                        .back(5)
+                        .build();
+                drive.followTrajectorySequence(cazCentru);
+                telemetry.addLine("Centru");
+                break;
+            }
+
+//        default: {
+//            drive.followTrajectorySequence(cazCentru);
+//            break;
+//        }
+
         }
+        PoseStorage.currentPose = drive.getPoseEstimate();
     }
+    @Override
+    public void loop() {
+        drive.update();
+    }
+
 }

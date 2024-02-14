@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDriveTeleOP;
 import org.firstinspires.ftc.teamcode.ochi.pipelines.TGERecognition_blue;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -22,7 +22,7 @@ public class spikemark_blue extends OpMode {
     TGERecognition_blue pipeline;
     TGERecognition_blue.TGEPosition snapshotAnlysis;
 
-    SampleMecanumDrive drive;
+    SampleMecanumDriveTeleOP drive;
     TrajectorySequence cazCentru;
     Pose2d startPose;
     TrajectorySequence cazStanga;
@@ -34,7 +34,7 @@ public class spikemark_blue extends OpMode {
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         pipeline = new TGERecognition_blue();
         webcam.setPipeline(pipeline);
-        drive = new SampleMecanumDrive(hardwareMap);
+        drive = new SampleMecanumDriveTeleOP(hardwareMap);
 
         startPose = new Pose2d(0, 0, 0);
 //        telemetry.addData("Cazull", snapshotAnlysis);

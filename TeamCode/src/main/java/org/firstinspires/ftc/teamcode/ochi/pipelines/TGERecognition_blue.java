@@ -202,7 +202,7 @@ public class TGERecognition_blue extends OpenCvPipeline {
             Imgproc.rectangle(HSV, region3_pointA,region3_pointB,new Scalar(250,0,0),3);
         }
 
-        return blueMask;
+        return HSV;
     }
 
 }

@@ -17,7 +17,10 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPos)
                                 .lineToLinearHeading(new Pose2d(13, 35, Math.toRadians(360-30)))
-                                .back(10)
+                                .back(3)
+                                .lineToLinearHeading(new Pose2d(24,60,Math.toRadians(180)))
+                                .lineToLinearHeading(new Pose2d(46,40,Math.toRadians(180)))
+//                                .lineToConstantHeading(new Vector2d(11,9))
                                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)

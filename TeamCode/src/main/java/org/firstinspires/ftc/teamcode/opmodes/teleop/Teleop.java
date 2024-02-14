@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.TwoWheelTrackingLocalizer;
 import org.firstinspires.ftc.teamcode.robothardware;
+import org.firstinspires.ftc.teamcode.utilities.PoseStorage;
 
 
 @TeleOp(name = "TeleOP", group = "A")
@@ -12,11 +16,15 @@ public class Teleop extends OpMode {
 
     robothardware robot = new robothardware(this);
 
+
+
     private static int state_lift_pos = 100;
     private double state_caseta_align = robot.aligner_intake;
     private double state_pendul_pos = robot.pendul_intake;
     boolean right_bumper_pressed = false;
     private org.firstinspires.ftc.robotcore.external.Telemetry Telemetry;
+
+    TwoWheelTrackingLocalizer myLocalizer;
     double x,y,rx;
 
     double sin;
@@ -24,12 +32,16 @@ public class Teleop extends OpMode {
     @Override
     public void init() {
         robot.init();
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        myLocalizer = new TwoWheelTrackingLocalizer(hardwareMap, drive);
 //        robot.usa.setPosition(0.0);
 //        robot.al1.setPosition(0.0);
 //        robot.al2.setPosition(0.0);
 //        robot.plane.setPosition(0);
 //        OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
 //        robot.ridicare2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        myLocalizer.setPoseEstimate(PoseStorage.currentPose);
+
 
 
 
@@ -110,7 +122,12 @@ public class Teleop extends OpMode {
 //        if(gamepad1.x){
 //            robot.plane.setPosition(0.4);
 //        }
+        myLocalizer.update();
+        Pose2d myPose = myLocalizer.getPoseEstimate();
 
+        telemetry.addData("x", myPose.getX());
+        telemetry.addData("y", myPose.getY());
+        telemetry.addData("heading", myPose.getHeading());
 //        telemetry.addData("Pendulare", robot.pendulare.getPosition());
 //        telemetry.addData("Aligner", robot.aligner.getPosition());
 //        telemetry.addData("Pozitie Ridicare", robot.ridicare2.getCurrentPosition());
