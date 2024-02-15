@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -15,7 +17,7 @@ import org.firstinspires.ftc.teamcode.utilities.PoseStorage;
 public class Teleop extends OpMode {
 
     robothardware robot = new robothardware(this);
-
+    SampleMecanumDrive drive;
 
 
     private static int state_lift_pos = 100;
@@ -25,22 +27,32 @@ public class Teleop extends OpMode {
     private org.firstinspires.ftc.robotcore.external.Telemetry Telemetry;
 
     TwoWheelTrackingLocalizer myLocalizer;
+    Vector2d VectorAvion;
     double x,y,rx;
 
     double sin;
     double cos;
+    enum Mode {
+        DRIVER_CONTROL,
+        AUTOMATIC_CONTROL
+    }
+    Mode currentMode = Mode.DRIVER_CONTROL;
+
     @Override
     public void init() {
         robot.init();
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        myLocalizer = new TwoWheelTrackingLocalizer(hardwareMap, drive);
+        drive = new SampleMecanumDrive(hardwareMap);
+        VectorAvion = new Vector2d(47, 13);
+
+
 //        robot.usa.setPosition(0.0);
 //        robot.al1.setPosition(0.0);
 //        robot.al2.setPosition(0.0);
 //        robot.plane.setPosition(0);
 //        OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
 //        robot.ridicare2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        myLocalizer.setPoseEstimate(PoseStorage.currentPose);
+//        drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        drive.setPoseEstimate(PoseStorage.currentPose);
 
 
 
@@ -105,7 +117,7 @@ public class Teleop extends OpMode {
 
     public void loop() {
 
-        robot.movement(gamepad1);
+//        robot.movement(gamepad1);
 //        spanzurare();
 //        storageOuttake();
 //        intake();
@@ -122,12 +134,38 @@ public class Teleop extends OpMode {
 //        if(gamepad1.x){
 //            robot.plane.setPosition(0.4);
 //        }
-        myLocalizer.update();
-        Pose2d myPose = myLocalizer.getPoseEstimate();
+        Pose2d poseEstimate = drive.getPoseEstimate();
 
-        telemetry.addData("x", myPose.getX());
-        telemetry.addData("y", myPose.getY());
-        telemetry.addData("heading", myPose.getHeading());
+        switch (currentMode){
+            case DRIVER_CONTROL:
+                robot.movement(gamepad1);
+                if (gamepad1.y) {
+                    // If the A button is pressed on gamepad1, we generate a splineTo()
+                    // trajectory on the fly and follow it
+                    // We switch the state to AUTOMATIC_CONTROL
+
+                    Trajectory avion = drive.trajectoryBuilder(poseEstimate)
+                            .splineToLinearHeading(new Pose2d(47,13), Math.toRadians(0))
+                            .build();
+
+                    drive.followTrajectoryAsync(avion);
+                    currentMode = Mode.AUTOMATIC_CONTROL;
+                }
+                break;
+            case AUTOMATIC_CONTROL:
+                if(gamepad1.x) {
+                    drive.breakFollowing();
+                    currentMode = Mode.DRIVER_CONTROL;
+                }
+                if (!drive.isBusy()) {
+                    currentMode = Mode.DRIVER_CONTROL;
+                }
+                break;
+        }
+        drive.update();
+
+
+
 //        telemetry.addData("Pendulare", robot.pendulare.getPosition());
 //        telemetry.addData("Aligner", robot.aligner.getPosition());
 //        telemetry.addData("Pozitie Ridicare", robot.ridicare2.getCurrentPosition());

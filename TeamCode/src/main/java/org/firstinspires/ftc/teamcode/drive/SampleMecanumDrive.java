@@ -158,6 +158,9 @@ public class SampleMecanumDrive extends MecanumDrive {
                 MAX_ANG_VEL, MAX_ANG_ACCEL
         );
     }
+    public void breakFollowing() {
+        trajectorySequenceRunner.breakFollowing();
+    }
 
     public void turnAsync(double angle) {
         trajectorySequenceRunner.followTrajectorySequenceAsync(
@@ -300,6 +303,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     public Double getExternalHeadingVelocity() {
         return (double) imu.getRobotAngularVelocity(AngleUnit.RADIANS).xRotationRate;
     }
+
 
     public static TrajectoryVelocityConstraint getVelocityConstraint(double maxVel, double maxAngularVel, double trackWidth) {
         return new MinVelocityConstraint(Arrays.asList(

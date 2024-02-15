@@ -9,13 +9,14 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.ochi.pipelines.TGERecognition_blue;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.utilities.PoseStorage;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(group = "A", preselectTeleOp = "TeleOP")
 
-public class spikemark_blue extends OpMode {
+public class albastruDeparte extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     OpenCvCamera webcam;
@@ -77,9 +78,11 @@ public class spikemark_blue extends OpMode {
                 drive.setPoseEstimate(offset);
 
                 cazStanga = drive.trajectorySequenceBuilder(startPose.plus(offset))
-                        .lineToSplineHeading(new Pose2d(18  , 35, Math.toRadians(360-50)))
-                        .back(5)
+                        .lineToLinearHeading(new Pose2d(13, 35, Math.toRadians(360-30)))
+                        .back(3)
+
                         .build();
+
                 drive.followTrajectorySequence(cazStanga);
                 telemetry.addLine("Stanga");
 
@@ -91,8 +94,9 @@ public class spikemark_blue extends OpMode {
                 drive.setPoseEstimate(offset);
 
                 cazDreapta = drive.trajectorySequenceBuilder(startPose.plus(offset))
-                        .lineToLinearHeading(new Pose2d(8.4, 35, Math.toRadians(200)))
+                        .lineToLinearHeading(new Pose2d(6, 35, Math.toRadians(270-30)))
                         .back(5)
+
                         .build();
                 drive.followTrajectorySequence(cazDreapta);
                 telemetry.addData("Cazul",snapshotAnlysis );
@@ -103,22 +107,18 @@ public class spikemark_blue extends OpMode {
                 Pose2d offset = new Pose2d(12, 60, Math.toRadians(270));
                 drive.setPoseEstimate(offset);
                 cazCentru = drive.trajectorySequenceBuilder(startPose.plus(offset))
-                        .forward(27)
-                        .back(5)
+                        .back(8)
                         .build();
                 drive.followTrajectorySequence(cazCentru);
                 telemetry.addLine("Centru");
                 break;
             }
-//        default: {
-//            drive.followTrajectorySequence(cazCentru);
-//            break;
-//        }
-
         }
+        PoseStorage.currentPose = drive.getPoseEstimate();
     }
     @Override
     public void loop() {
         drive.update();
     }
+
 }
