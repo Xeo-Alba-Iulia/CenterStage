@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -78,9 +79,19 @@ public class albastruDeparte extends OpMode {
                 drive.setPoseEstimate(offset);
 
                 cazStanga = drive.trajectorySequenceBuilder(startPose.plus(offset))
-                        .lineToLinearHeading(new Pose2d(13, 35, Math.toRadians(360-30)))
-                        .back(3)
-
+                        .lineToLinearHeading(new Pose2d(-32, 35, Math.toRadians(360-30)))
+                        .back(5)
+                        .lineToLinearHeading(new Pose2d(-46, 10, Math.toRadians(180)))
+                        .back(70)
+                        .lineToLinearHeading(new Pose2d(46, 40, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(26,10,Math.toRadians(180)))
+                        .forward(80)
+                        .strafeRight(5)
+                        .lineTo(new Vector2d(-48,10))
+                        .back(75)
+                        .lineToLinearHeading(new Pose2d(46, 40, Math.toRadians(180)))
+                        .strafeRight(20)
+                        .back(5)
                         .build();
 
                 drive.followTrajectorySequence(cazStanga);

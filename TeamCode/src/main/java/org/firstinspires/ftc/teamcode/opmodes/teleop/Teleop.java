@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.TwoWheelTrackingLocalizer;
 import org.firstinspires.ftc.teamcode.robothardware;
 import org.firstinspires.ftc.teamcode.utilities.PoseStorage;
+import org.firstinspires.ftc.teamcode.utilities.ServoSmoothing;
 
 
 @TeleOp(name = "TeleOP", group = "A")
@@ -19,10 +20,11 @@ public class Teleop extends OpMode {
     robothardware robot = new robothardware(this);
     SampleMecanumDrive drive;
 
-
     private static int state_lift_pos = 100;
     private double state_caseta_align = robot.aligner_intake;
     private double state_pendul_pos = robot.pendul_intake;
+
+    private double midPos;
     boolean right_bumper_pressed = false;
     private org.firstinspires.ftc.robotcore.external.Telemetry Telemetry;
 
@@ -36,6 +38,11 @@ public class Teleop extends OpMode {
         DRIVER_CONTROL,
         AUTOMATIC_CONTROL
     }
+    enum ServoPos{
+        IN_PROGRESS,
+        IDLE
+    }
+    ServoPos currentServoPos = ServoPos.IDLE;
     Mode currentMode = Mode.DRIVER_CONTROL;
 
     @Override
@@ -139,6 +146,32 @@ public class Teleop extends OpMode {
         switch (currentMode){
             case DRIVER_CONTROL:
                 robot.movement(gamepad1);
+
+                    switch (currentServoPos){
+                        case IDLE:
+                            if(gamepad1.dpad_up)
+                                currentServoPos = ServoPos.IN_PROGRESS;
+                                midPos = robot.pend1.getPosition();
+                            break;
+                        case IN_PROGRESS:
+                            robot.pend1.setPosition(ServoSmoothing.servoSmoothing(midPos, 1));
+                            if(robot.pend1.getPosition()>1-0.005) {
+                                robot.pend1.setPosition(1);
+                                currentServoPos = ServoPos.IDLE;
+                            }
+                            else {
+                                midPos = robot.pend1.getPosition();
+                            }
+                            break;
+                    }
+
+                if(gamepad1.dpad_down) {
+                    //robot.pend1.setPosition(ServoSmoothing.servoSmoothing(robot.pend1, robot.pendul_intake));
+                }
+                if(gamepad1.left_bumper)
+                    robot.pend1.setPosition(0);
+                if(gamepad1.right_bumper)
+                    robot.pend1.setPosition(1);
                 if (gamepad1.y) {
                     // If the A button is pressed on gamepad1, we generate a splineTo()
                     // trajectory on the fly and follow it
@@ -147,6 +180,7 @@ public class Teleop extends OpMode {
                     Trajectory avion = drive.trajectoryBuilder(poseEstimate)
                             .splineToLinearHeading(new Pose2d(47,13), Math.toRadians(0))
                             .build();
+
 
                     drive.followTrajectoryAsync(avion);
                     currentMode = Mode.AUTOMATIC_CONTROL;
@@ -175,7 +209,7 @@ public class Teleop extends OpMode {
         sin = Math.sin(robot.joystick_angle(x,y)-Math.PI/2);
         cos = Math.cos(robot.joystick_angle(x,y)-Math.PI/2);
 
-
+        telemetry.addData("Servo POs",robot.pend1.getPosition());
         telemetry.addData("Speed",robot.joystick_speed(x,y));
         telemetry.addData("Turn", robot.joystick_angle(x,y));
         telemetry.addData("X",sin);

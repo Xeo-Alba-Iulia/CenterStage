@@ -4,6 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.ServoImplEx;
+
+import org.firstinspires.ftc.teamcode.sisteme.Aligner;
+import org.firstinspires.ftc.teamcode.sisteme.Pendulare;
 
 public class robothardware {
     private final OpMode myOpMode;
@@ -20,18 +24,18 @@ public class robothardware {
 //    public DcMotor ridicare2;
 //    public DcMotor spanzurare;
   //servomotoare
-//    public Servo al1;
-//    public Servo al2;
+    public ServoImplEx al1;
+    public ServoImplEx al2;
 //    public Servo usa;
 //    public Servo plane;
-//    public ServoImplEx pend1;
-//    public ServoImplEx pend2;
+    public ServoImplEx pend1;
+    public ServoImplEx pend2;
 
 //pozitii aligner caseta
     public final double aligner_outake1 = 0.72;
     public final double aligner_outake2 = 0.77;
     public final double aligner_outake3 = 0.77;
-    public final double aligner_intake = 0;
+    public final double aligner_intake = 0.5;
     //pozitii pendul
     public final double pendul_outtake1 = 0.6;
     public final double pendul_outtake2 = 0.61;
@@ -40,8 +44,8 @@ public class robothardware {
 
 //    public Spanzurare hanging;
 //    public Ridicare lift;
-//    public Aligner aligner;
-//    public Pendulare pendulare;
+    public Aligner aligner;
+    public Pendulare pendulare;
 
     public robothardware(OpMode opmode) {myOpMode = opmode;}
 
@@ -55,24 +59,23 @@ public class robothardware {
 //        spanzurare = myOpMode.hardwareMap.dcMotor.get("Spanzurare");
 //        usa = myOpMode.hardwareMap.servo.get("Claw");
 //        intec = myOpMode.hardwareMap.dcMotor.get("Intec");
-//        al1 = myOpMode.hardwareMap.servo.get("Aligner1");//caseta
-//        al2 = myOpMode.hardwareMap.servo.get("Aligner2");
+        al1 = myOpMode.hardwareMap.get(ServoImplEx.class, "Aligner1");//caseta
+        al2 = myOpMode.hardwareMap.get(ServoImplEx.class, "Aligner2");
 //        plane = myOpMode.hardwareMap.servo.get("Avion");
 //        ridicare1 = myOpMode.hardwareMap.dcMotor.get("Ridicare1");
 //        ridicare2 = myOpMode.hardwareMap.dcMotor.get("Ridicare2");
-//        pend1 = myOpMode.hardwareMap.get(ServoImplEx.class, "Pendul1");
-//        pend2 = myOpMode.hardwareMap.get(ServoImplEx.class,"Pendul2");
-//        pendulare = new Pendulare(pend1, pend2);
-//        aligner = new Aligner(al1,al2);
+        pend1 = myOpMode.hardwareMap.get(ServoImplEx.class, "Pendul1");
+        pend2 = myOpMode.hardwareMap.get(ServoImplEx.class,"Pendul2");
+        pendulare = new Pendulare(pend1, pend2);
+        aligner = new Aligner(al1,al2);
 //        lift = new Ridicare(ridicare1,ridicare2);
 //        hanging = new Spanzurare(spanzurare);
 //        plane.setDirection(Servo.Direction.REVERSE);
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        //pend1.getPwmRange()
 
 
-//        pend2.setDirection(Servo.Direction.REVERSE);
-//        pend1.setDirection(Servo.Direction.REVERSE);
 //        al1.setDirection(Servo.Direction.REVERSE);
 //        ridicare2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
