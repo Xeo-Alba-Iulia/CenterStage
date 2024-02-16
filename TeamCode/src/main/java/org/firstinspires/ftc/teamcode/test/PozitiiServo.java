@@ -33,12 +33,12 @@ public class PozitiiServo extends LinearOpMode {
 
         if(isStopRequested()) return;
         while (opModeIsActive()){
-            robot.pendulare.setPosition(pozitie_pendul);
-            robot.aligner.setPosition(pozitie_aligner);
+//            robot.pendulare.setPosition(pozitie_pendul);
+//            robot.aligner.setPosition(pozitie_aligner);
 //            robot.plane.setPosition(pozitie_aveon);
 //            robot.usa.setPosition(pozitie_usa);
-            dashboardTelemetry.addData("Pozitie Pendul",robot.pendulare.getPosition());
-            dashboardTelemetry.addData("Pozitie Aligmer",robot.aligner.getPosition());
+//            dashboardTelemetry.addData("Pozitie Pendul",robot.pendulare.getPosition());
+//            dashboardTelemetry.addData("Pozitie Aligmer",robot.aligner.getPosition());
 //            dashboardTelemetry.addData("Pozitie Avion", robot.plane.getPosition());
 //            dashboardTelemetry.addData("Pozitie Usa",robot.usa.getPosition());
             dashboardTelemetry.update();

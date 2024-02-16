@@ -32,12 +32,12 @@ public class  kinematictest extends OpMode {
     @Override
     public void loop() {
 
-    robot.movement(gamepad1);
+//    robot.movement(gamepad1);
         x  = -gamepad1.left_stick_y;
         y  = gamepad1.left_stick_x;
         rx = gamepad1.right_stick_x;
-        telemetry.addData("Speed",robot.joystick_speed(x,y));
-        telemetry.addData("Turn", robot.joystick_angle(x,y));
+//        telemetry.addData("Speed",robot.joystick_speed(x,y));
+//        telemetry.addData("Turn", robot.joystick_angle(x,y));
     telemetry.update();
 
     }

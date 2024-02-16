@@ -1,16 +1,11 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.drive.TwoWheelTrackingLocalizer;
 import org.firstinspires.ftc.teamcode.robothardware;
-import org.firstinspires.ftc.teamcode.utilities.PoseStorage;
-import org.firstinspires.ftc.teamcode.utilities.ServoSmoothing;
 
 
 @TeleOp(name = "TeleOP", group = "A")
@@ -18,7 +13,7 @@ import org.firstinspires.ftc.teamcode.utilities.ServoSmoothing;
 public class Teleop extends OpMode {
 
     robothardware robot = new robothardware(this);
-    SampleMecanumDrive drive;
+//    SampleMecanumDrive drive;
 
     private static int state_lift_pos = 100;
     private double state_caseta_align = robot.aligner_intake;
@@ -48,10 +43,10 @@ public class Teleop extends OpMode {
     @Override
     public void init() {
         robot.init();
-        drive = new SampleMecanumDrive(hardwareMap);
+//        drive = new SampleMecanumDrive(hardwareMap);
         VectorAvion = new Vector2d(47, 13);
 
-
+    robot.pendulare.setPosition(0.2);
 //        robot.usa.setPosition(0.0);
 //        robot.al1.setPosition(0.0);
 //        robot.al2.setPosition(0.0);
@@ -59,7 +54,7 @@ public class Teleop extends OpMode {
 //        OpenCvCamera camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
 //        robot.ridicare2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        drive.setPoseEstimate(PoseStorage.currentPose);
+//        drive.setPoseEstimate(PoseStorage.currentPose);
 
 
 
@@ -106,14 +101,14 @@ public class Teleop extends OpMode {
 //                robot.intec.setPower(0);
 //
 //    }
-//    private void ridicare(){
-//        robot.ridicare1.setPower(gamepad2.right_trigger);
-//        robot.ridicare2.setPower(gamepad2.right_trigger);
-//
-//
-//        robot.ridicare1.setPower(-gamepad2.left_trigger);
-//        robot.ridicare2.setPower(-gamepad2.left_trigger);
-//    }
+    private void ridicare(){
+        robot.ridicare1.setPower(gamepad2.right_trigger);
+        robot.ridicare2.setPower(gamepad2.right_trigger);
+
+
+        robot.ridicare1.setPower(-gamepad2.left_trigger);
+        robot.ridicare2.setPower(-gamepad2.left_trigger);
+    }
 //    private void spanzurare(){
 //        if (gamepad1.x)
 //            robot.hanging.target = Spanzurare.POS_HANGING;
@@ -129,7 +124,7 @@ public class Teleop extends OpMode {
 //        storageOuttake();
 //        intake();
 //        spanzurare();
-//        ridicare();
+        ridicare();
 //        robot.spanzurare.setPower(gamepad1.right_stick_y);
 
 
@@ -141,62 +136,62 @@ public class Teleop extends OpMode {
 //        if(gamepad1.x){
 //            robot.plane.setPosition(0.4);
 //        }
-        Pose2d poseEstimate = drive.getPoseEstimate();
+//        Pose2d poseEstimate = drive.getPoseEstimate();
 
-        switch (currentMode){
-            case DRIVER_CONTROL:
-                robot.movement(gamepad1);
-
-                    switch (currentServoPos){
-                        case IDLE:
-                            if(gamepad1.dpad_up)
-                                currentServoPos = ServoPos.IN_PROGRESS;
-                                midPos = robot.pend1.getPosition();
-                            break;
-                        case IN_PROGRESS:
-                            robot.pend1.setPosition(ServoSmoothing.servoSmoothing(midPos, 1));
-                            if(robot.pend1.getPosition()>1-0.005) {
-                                robot.pend1.setPosition(1);
-                                currentServoPos = ServoPos.IDLE;
-                            }
-                            else {
-                                midPos = robot.pend1.getPosition();
-                            }
-                            break;
-                    }
-
-                if(gamepad1.dpad_down) {
-                    //robot.pend1.setPosition(ServoSmoothing.servoSmoothing(robot.pend1, robot.pendul_intake));
-                }
-                if(gamepad1.left_bumper)
-                    robot.pend1.setPosition(0);
-                if(gamepad1.right_bumper)
-                    robot.pend1.setPosition(1);
-                if (gamepad1.y) {
-                    // If the A button is pressed on gamepad1, we generate a splineTo()
-                    // trajectory on the fly and follow it
-                    // We switch the state to AUTOMATIC_CONTROL
-
-                    Trajectory avion = drive.trajectoryBuilder(poseEstimate)
-                            .splineToLinearHeading(new Pose2d(47,13), Math.toRadians(0))
-                            .build();
-
-
-                    drive.followTrajectoryAsync(avion);
-                    currentMode = Mode.AUTOMATIC_CONTROL;
-                }
-                break;
-            case AUTOMATIC_CONTROL:
-                if(gamepad1.x) {
-                    drive.breakFollowing();
-                    currentMode = Mode.DRIVER_CONTROL;
-                }
-                if (!drive.isBusy()) {
-                    currentMode = Mode.DRIVER_CONTROL;
-                }
-                break;
-        }
-        drive.update();
+//        switch (currentMode){
+//            case DRIVER_CONTROL:
+////                robot.movement(gamepad1);
+//
+//                    switch (currentServoPos){
+//                        case IDLE:
+//                            if(gamepad1.dpad_up)
+//                                currentServoPos = ServoPos.IN_PROGRESS;
+//                                midPos = robot.pend1.getPosition();
+//                            break;
+//                        case IN_PROGRESS:
+//                            robot.pend1.setPosition(ServoSmoothing.servoSmoothing(midPos, 1));
+//                            if(robot.pend1.getPosition()>1-0.005) {
+//                                robot.pend1.setPosition(1);
+//                                currentServoPos = ServoPos.IDLE;
+//                            }
+//                            else {
+//                                midPos = robot.pend1.getPosition();
+//                            }
+//                            break;
+//                    }
+//
+//                if(gamepad1.dpad_down) {
+//                    //robot.pend1.setPosition(ServoSmoothing.servoSmoothing(robot.pend1, robot.pendul_intake));
+//                }
+//                if(gamepad1.left_bumper)
+//                    robot.pend1.setPosition(0);
+//                if(gamepad1.right_bumper)
+//                    robot.pend1.setPosition(1);
+//                if (gamepad1.y) {
+//                    // If the A button is pressed on gamepad1, we generate a splineTo()
+//                    // trajectory on the fly and follow it
+//                    // We switch the state to AUTOMATIC_CONTROL
+//
+//                    Trajectory avion = drive.trajectoryBuilder(poseEstimate)
+//                            .splineToLinearHeading(new Pose2d(47,13), Math.toRadians(0))
+//                            .build();
+//
+//
+//                    drive.followTrajectoryAsync(avion);
+//                    currentMode = Mode.AUTOMATIC_CONTROL;
+//                }
+//                break;
+//            case AUTOMATIC_CONTROL:
+//                if(gamepad1.x) {
+//                    drive.breakFollowing();
+//                    currentMode = Mode.DRIVER_CONTROL;
+//                }
+//                if (!drive.isBusy()) {
+//                    currentMode = Mode.DRIVER_CONTROL;
+//                }
+//                break;
+//        }
+//        drive.update();
 
 
 
@@ -206,15 +201,15 @@ public class Teleop extends OpMode {
         x  = -gamepad1.left_stick_y;
         y  = gamepad1.left_stick_x;
         rx = gamepad1.right_stick_y;
-        sin = Math.sin(robot.joystick_angle(x,y)-Math.PI/2);
-        cos = Math.cos(robot.joystick_angle(x,y)-Math.PI/2);
+//        sin = Math.sin(robot.joystick_angle(x,y)-Math.PI/2);
+//        cos = Math.cos(robot.joystick_angle(x,y)-Math.PI/2);
 
-        telemetry.addData("Servo POs",robot.pend1.getPosition());
-        telemetry.addData("Speed",robot.joystick_speed(x,y));
-        telemetry.addData("Turn", robot.joystick_angle(x,y));
-        telemetry.addData("X",sin);
-        telemetry.addData("Y", cos);
-        telemetry.addData("Rx", rx);
+//        telemetry.addData("Servo POs",robot.pend1.getPosition());
+//        telemetry.addData("Speed",robot.joystick_speed(x,y));
+//        telemetry.addData("Turn", robot.joystick_angle(x,y));
+//        telemetry.addData("X",sin);
+//        telemetry.addData("Y", cos);
+//        telemetry.addData("Rx", rx);
         telemetry.update();
     }
 

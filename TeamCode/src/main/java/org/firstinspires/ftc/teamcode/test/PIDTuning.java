@@ -42,7 +42,7 @@ public class PIDTuning extends LinearOpMode {
             lastKp = Kp;
             lastKi = Ki;
             lastKd = Kd;
-            power = controller.update(POZITIE,robot.pend1.getPosition());
+//            power = controller.update(POZITIE,robot.pend1.getPosition());
             
 
             dashboardTelemetry.addData("Target Pos",POZITIE);
