@@ -10,16 +10,18 @@ public class Ridicare {
     public PIDController controller;
 
     //pozitii ridicare
-    public static final int POS_1 = 2300; //-8432
-    public static final int POS_2 = 4600; //-19000
-    public static final int POS_3 = 6900; // -34000
+    public static final int POS_1 = 10; //0
+    public static final int POS_2 = 230; //230
+    public static final int POS_3 = 814; // 2100
+    public static final int POS_4 = 2000; //230
+
     public int target;
 
     public Ridicare (DcMotor ridicare1, DcMotor ridicare2) {
         this.ridicare1 = ridicare1;
         this.ridicare2 = ridicare2;
         target = 0;
-        controller = new PIDController(0.024, 0.007955396742, 0);
+        controller = new PIDController(0.01, 0, 0);
     }
 
     /**
@@ -51,7 +53,7 @@ public class Ridicare {
      */
     public void resetEncoder() {
         ridicare1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        ridicare2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        ridicare2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     /**

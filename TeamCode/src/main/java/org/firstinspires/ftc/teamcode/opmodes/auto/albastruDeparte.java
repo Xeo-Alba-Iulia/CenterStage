@@ -105,9 +105,19 @@ public class albastruDeparte extends OpMode {
                 drive.setPoseEstimate(offset);
 
                 cazDreapta = drive.trajectorySequenceBuilder(startPose.plus(offset))
-                        .lineToLinearHeading(new Pose2d(6, 35, Math.toRadians(270-30)))
+                        .lineToLinearHeading(new Pose2d(-40, 35, Math.toRadians(270-40)))
+                        .lineToLinearHeading(new Pose2d(-34,38,Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(-35, 10, Math.toRadians(180)))
+                        .back(70)
+                        .lineToLinearHeading(new Pose2d(46, 40, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(26,10,Math.toRadians(180)))
+                        .forward(80)
+                        .strafeRight(5)
+                        .lineTo(new Vector2d(-48,10))
+                        .back(75)
+                        .lineToLinearHeading(new Pose2d(46, 40, Math.toRadians(180)))
+                        .strafeRight(20)
                         .back(5)
-
                         .build();
                 drive.followTrajectorySequence(cazDreapta);
                 telemetry.addData("Cazul",snapshotAnlysis );
@@ -118,7 +128,21 @@ public class albastruDeparte extends OpMode {
                 Pose2d offset = new Pose2d(12, 60, Math.toRadians(270));
                 drive.setPoseEstimate(offset);
                 cazCentru = drive.trajectorySequenceBuilder(startPose.plus(offset))
-                        .back(8)
+                        .lineToLinearHeading(new Pose2d(-33,32,Math.toRadians(270+20)))
+                        .back(5)
+                        .strafeRight(20)
+                        .lineToLinearHeading(new Pose2d(-35, 10, Math.toRadians(-180)))
+//                                .turn(Math.toRadians(-90))
+                        .back(70)
+                        .lineToLinearHeading(new Pose2d(46, 40, Math.toRadians(180)))
+                        .lineToLinearHeading(new Pose2d(26,10,Math.toRadians(180)))
+                        .forward(80)
+                        .strafeRight(5)
+                        .lineTo(new Vector2d(-48,10))
+                        .back(75)
+                        .lineToLinearHeading(new Pose2d(46, 40, Math.toRadians(180)))
+                        .strafeRight(20)
+                        .back(5)
                         .build();
                 drive.followTrajectorySequence(cazCentru);
                 telemetry.addLine("Centru");

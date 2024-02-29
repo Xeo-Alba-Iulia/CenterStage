@@ -8,14 +8,8 @@ public class ServoSmoothing {
     return smoothedPos;
     }
 }
-//daca curent pos<0.1
-//      Pwm Range facem mai mic
-//altfel daca curent pos>servo outtake-0.1
-//      Pwm Range facem mai mic
-//altfel
-//      Pwn Range
 
-//daca target-curent<0.1
-//    pwm scade
-//altfel
-//    pwm default
+
+
+
+

@@ -1,38 +1,28 @@
 package org.firstinspires.ftc.teamcode.sisteme;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-
-import org.firstinspires.ftc.teamcode.utilities.PIDController;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class Spanzurare {
     DcMotor spanzurare;
-
-    public PIDController controller;
-
-    public static final int POS_HANGING = 1000;
-    public static final int POS_JOS = 0;
-    public int target;
+    int nr = 0;
 
     public Spanzurare(DcMotor spanzurare){
         this.spanzurare = spanzurare;
+    }
+    public void goToPosHanging(Gamepad gamepad){
+        spanzurare.setTargetPosition(0);
+        spanzurare.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        target = 0;
-        controller = new PIDController(0,0,0);
-    }
-    public void setPower(double power){
-        spanzurare.setPower(power);
-    }
-    public double getPower(){
-        return spanzurare.getPower();
-    }
-    public int getCurrentPosition(){
-        return spanzurare.getCurrentPosition();
-    }
-    public void resetEndcoder(){
-        spanzurare.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    }
-    public void update(){
-        double power = controller.update(target,spanzurare.getCurrentPosition());
-        spanzurare.setPower(power);
+        if (gamepad.y){
+            nr++;
+        }
+        if(nr==1){
+            spanzurare.setTargetPosition(2000);
+            spanzurare.setPower(1);
+        } else if (nr==2) {
+            spanzurare.setTargetPosition(0);
+            spanzurare.setPower(1);
+        }
     }
 }

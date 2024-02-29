@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.sisteme;
 
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoImplEx;
 
 public class Pendulare {
-    Servo pend1, pend2;
+    ServoImplEx pend1, pend2;
 
-    public Pendulare(Servo pend1, Servo pend2) {
+    public Pendulare(ServoImplEx pend1, ServoImplEx pend2) {
         this.pend1 = pend1;
         this.pend2 = pend2;
     }

@@ -1,16 +1,11 @@
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-
-import java.util.Objects;
 
 /**
  * This is a simple teleop routine for testing localization. Drive the robot around like a normal
@@ -21,21 +16,13 @@ import java.util.Objects;
  */
 @TeleOp(group = "drive")
 public class LocalizationTest extends LinearOpMode {
-
-
-
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        Telemetry telemetry = new MultipleTelemetry(this.telemetry, dashboard.getTelemetry());
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-
-
         waitForStart();
-
 
         while (!isStopRequested()) {
             drive.setWeightedDrivePower(
@@ -47,13 +34,11 @@ public class LocalizationTest extends LinearOpMode {
             );
 
             drive.update();
+
             Pose2d poseEstimate = drive.getPoseEstimate();
-            Pose2d poseVelo = Objects.requireNonNull(drive.getPoseVelocity(), "poseVelocity() must not be null. Ensure that the getWheelVelocities() method has been overridden in your localizer.");
-            double currentVelo = poseVelo.getY()   ;
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());
-            telemetry.addData("measured velo", currentVelo);
             telemetry.update();
         }
     }

@@ -92,10 +92,7 @@ public class TrajectorySequenceRunner {
         currentSegmentIndex = 0;
         lastSegmentIndex = -1;
     }
-    public void breakFollowing() {
-        currentTrajectorySequence = null;
-        remainingMarkers.clear();
-    }
+
     public @Nullable
     DriveSignal update(Pose2d poseEstimate, Pose2d poseVelocity) {
         Pose2d targetPose = null;
@@ -305,5 +302,9 @@ public class TrajectorySequenceRunner {
 
     public boolean isBusy() {
         return currentTrajectorySequence != null;
+    }
+    public void breakFollowing() {
+        currentTrajectorySequence = null;
+        remainingMarkers.clear();
     }
 }

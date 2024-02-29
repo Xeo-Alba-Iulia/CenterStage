@@ -9,7 +9,7 @@ import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
-        Pose2d startPos = new Pose2d(12, 60, Math.toRadians(270));
+        Pose2d startPos = new Pose2d(-37, -60, Math.toRadians(90));
 
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
@@ -17,19 +17,22 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15.7)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPos)
-                                .lineToLinearHeading(new Pose2d(6, 35, Math.toRadians(270-30)))
+                                .lineToLinearHeading(new Pose2d(-33,-32,Math.toRadians(90-20)))
                                 .back(5)
-                                .lineToLinearHeading(new Pose2d(46,35,Math.toRadians(180)))
-                                .strafeRight(23)
-                                .forward(100)
-                                .lineTo(new Vector2d(-54,36))
-                                .strafeLeft(7)
-                                .strafeRight(29)
-                                .back(100)
-                                .strafeLeft(23)
-                                .strafeRight(21)
+                                .strafeLeft(20)
+                                .lineToLinearHeading(new Pose2d(-35, -10, Math.toRadians(-180)))
+                                .back(70)
+                                .lineToLinearHeading(new Pose2d(46, -40, Math.toRadians(180)))
+                                .lineToLinearHeading(new Pose2d(26,-10,Math.toRadians(180)))
+                                .forward(80)
+                                .strafeLeft(5)
+                                .lineTo(new Vector2d(-48,-10))
+                                .back(75)
+                                .lineToLinearHeading(new Pose2d(46, -40, Math.toRadians(180)))
+                                .strafeRight(20)
                                 .back(5)
                                 .build());
+        //rosu stanga centru sa se stieee
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
                 .setDarkMode(true)
