@@ -6,9 +6,9 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.robothardware;
 import org.firstinspires.ftc.teamcode.sisteme.Ridicare;
+import org.firstinspires.ftc.teamcode.utilities.DriveTeleOP;
 import org.firstinspires.ftc.teamcode.utilities.PoseStorage;
 import org.firstinspires.ftc.teamcode.utilities.ServoSmoothing;
 
@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.utilities.ServoSmoothing;
 public class Teleop extends OpMode {
 
     robothardware robot = new robothardware(this);
-    SampleMecanumDrive drive;
+    DriveTeleOP drive;
 
     //pozitie auxiliara servo smooth
     private double midPos;
@@ -54,7 +54,7 @@ public class Teleop extends OpMode {
     @Override
     public void init() {
         robot.init();
-        drive = new SampleMecanumDrive(hardwareMap);
+        drive = new DriveTeleOP(hardwareMap);
         drive.setPoseEstimate(PoseStorage.currentPose);
         VectorAvion = new Vector2d(47, 13);
         robot.pendulare.setPosition(robot.pendul_intake);
@@ -72,29 +72,30 @@ public class Teleop extends OpMode {
                 robot.movement(gamepad1);
                 robot.avion.PlaneLaunching(gamepad1);
                 robot.door.doorOpening(gamepad1);
-                robot.intake.runIntake(gamepad1);
+                robot.intake.runIntake(gamepad2);
+                robot.hanging.goToPosHanging(gamepad2);
+                robot.pendulManual.MiscarePendManuala(gamepad2);
                 switch (currentLiftState){
                     case INTAKE:
-                        robot.lift.target = Ridicare.POS_1;
-                        robot.pendulare.setPosition(robot.pendul_intake);
+                        robot.lift.target = 10 /*Ridicare.POS_1*/;
                         robot.aligner.setPosition(robot.aligner_intake);
-                        if (gamepad1.dpad_left)
+                        if (gamepad2.dpad_left)
                             currentLiftState = LiftState.UP1;
-                        else if (gamepad1.dpad_up)
+                        else if (gamepad2.dpad_up)
                             currentLiftState = LiftState.UP2;
-                        else if (gamepad1.dpad_right)
+                        else if (gamepad2.dpad_right)
                             currentLiftState = LiftState.UP3;
                         break;
                     case UP1:
                         robot.lift.target=Ridicare.POS_2;
                         robot.pendulare.setPosition(robot.pendul_outtake);
                         robot.aligner.setPosition(robot.aligner_outake);
-                        if (gamepad1.dpad_down){
+                        if (gamepad2.dpad_down){
                             currentLiftState = LiftState.DOWN1;
                             currentServoPos = ServoPos.IN_PROGRESS;
-                        } else if (gamepad1.dpad_up)
+                        } else if (gamepad2.dpad_up)
                             currentLiftState = LiftState.UP2;
-                        else if (gamepad1.dpad_right)
+                        else if (gamepad2.dpad_right)
                             currentLiftState = LiftState.UP3;
                         break;
                     case UP2:
@@ -102,13 +103,13 @@ public class Teleop extends OpMode {
                         robot.pendulare.setPosition(robot.pendul_outtake);
                         robot.aligner.setPosition(robot.aligner_outake);
 //                        robot.usa.setPosition(robot.usa_intake);
-                        if (gamepad1.dpad_down){
+                        if (gamepad2.dpad_down){
                             currentLiftState = LiftState.DOWN1;
                             currentServoPos = ServoPos.IN_PROGRESS;
                         }
-                        else if (gamepad1.dpad_left)
+                        else if (gamepad2.dpad_left)
                             currentLiftState = LiftState.UP1;
-                        else if (gamepad1.dpad_right)
+                        else if (gamepad2.dpad_right)
                             currentLiftState = LiftState.UP3;
                         break;
                     case UP3:
@@ -116,41 +117,42 @@ public class Teleop extends OpMode {
                         robot.pendulare.setPosition(robot.pendul_outtake);
                         robot.aligner.setPosition(robot.aligner_outake);
 //                        robot.usa.setPosition(robot.usa_intake);
-                        if (gamepad1.dpad_down){
+                        if (gamepad2.dpad_down){
                             currentLiftState = LiftState.DOWN1;
                             currentServoPos = ServoPos.IN_PROGRESS;
                         }
-                        else if(gamepad1.dpad_left)
+                        else if(gamepad2.dpad_left)
                             currentLiftState = LiftState.UP1;
-                        else if (gamepad1.dpad_up)
+                        else if (gamepad2.dpad_up)
                             currentLiftState = LiftState.UP2;
                         break;
                     case DOWN1:
                         robot.lift.target = Ridicare.POS_1;
                         robot.aligner.setPosition(robot.aligner_intake);
                         robot.pendulare.setPosition(0.35);
-                        if(robot.lift.getCurrentPosition()<50)
+                        if(robot.lift.getCurrentPosition()<50) {
                             currentLiftState = LiftState.DOWN2;
+                            midPos = robot.pendulare.getPosition();
+                        }
                         break;
                     case DOWN2:
 
                         switch (currentServoPos){
                             case IDLE:
-                                midPos = robot.pendulare.getPosition();
+                                //nothing
                                 break;
                             case IN_PROGRESS:
                                 robot.pendulare.setPosition(ServoSmoothing.servoSmoothing(midPos, robot.pendul_intake));
-                                if(robot.pendulare.getPosition()>robot.pendul_intake +0.005) {
+                                if(Math.abs(robot.pendulare.getPosition() - robot.pendul_intake)<0.005) {
                                     robot.pendulare.setPosition(robot.pendul_intake);
                                     currentServoPos = ServoPos.IDLE;
+                                    currentLiftState = LiftState.INTAKE;
                                 }
                                 else {
                                     midPos = robot.pendulare.getPosition();
                                 }
                                 break;
                         }
-                        if(robot.lift.getCurrentPosition()<30)
-                            currentLiftState = LiftState.INTAKE;
                         break;
                 }
                 if (gamepad1.y) {
@@ -163,7 +165,7 @@ public class Teleop extends OpMode {
                 break;
             case AUTOMATIC_CONTROL:
                 if(gamepad1.x) {
-                    drive.breakFollowing();
+//                    drive.breakFollowing();
                     currentMode = Mode.DRIVER_CONTROL;
                 }
                 if (!drive.isBusy()) {
@@ -176,7 +178,10 @@ public class Teleop extends OpMode {
         telemetry.addData("Case Driver Control: ", currentMode);
         telemetry.addData("Case Sisteme: ", currentLiftState);
         telemetry.addData("Case Servo", currentServoPos);
+        telemetry.addData("Pozitie Hang",robot.spanzurare.getCurrentPosition());
         telemetry.addData("Poitie Lift", robot.lift.getCurrentPosition());
+        telemetry.addData("Poitie Pendul", robot.pendulare.getPosition());
+        telemetry.addData("Poitie MidPos", midPos);
         telemetry.update();
 
     }

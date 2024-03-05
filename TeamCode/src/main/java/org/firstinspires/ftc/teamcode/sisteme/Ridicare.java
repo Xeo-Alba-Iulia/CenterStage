@@ -10,7 +10,7 @@ public class Ridicare {
     public PIDController controller;
 
     //pozitii ridicare
-    public static final int POS_1 = 10; //0
+    public static final int POS_1 = 0; //0
     public static final int POS_2 = 230; //230
     public static final int POS_3 = 814; // 2100
     public static final int POS_4 = 2000; //230

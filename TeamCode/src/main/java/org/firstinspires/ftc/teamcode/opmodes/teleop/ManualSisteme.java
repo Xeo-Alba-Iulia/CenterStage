@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.robothardware;
-
+@Disabled
 @TeleOp(name = "Test Sisteme", group = "A")
 
 public class ManualSisteme extends OpMode {
@@ -17,7 +18,7 @@ public class ManualSisteme extends OpMode {
         robot.spanzurare.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.pendulare.setPosition(robot.pendul_intake);
         robot.aligner.setPosition(robot.aligner_intake);
-        robot.usa.setPosition(robot.usa_intake);
+        robot.usa.setPosition(robot.door.usa_intake);
 //        robot.spanzurare.setTargetPosition(2200);
 //        robot.spanzurare.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -54,12 +55,7 @@ public class ManualSisteme extends OpMode {
         if (gamepad1.dpad_up)
             robot.pendulare.setPosition(robot.pendul_outtake);
     }
-    public void usa(){
-        if(gamepad1.right_bumper)
-            robot.usa.setPosition(robot.usa_outtake);
-        else
-            robot.usa.setPosition(robot.usa_intake);
-    }
+
     public void hanging(){
         robot.spanzurare.setPower(gamepad1.right_stick_y);
     }
@@ -74,7 +70,6 @@ public class ManualSisteme extends OpMode {
         ridicare();
         aligner();
         pendulare();
-        usa();
         hanging();
         robot.intake.runIntake(gamepad1);
         robot.hanging.goToPosHanging(gamepad1);

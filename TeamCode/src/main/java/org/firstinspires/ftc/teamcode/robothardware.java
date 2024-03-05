@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.sisteme.PlaneLauncher;
 import org.firstinspires.ftc.teamcode.sisteme.Ridicare;
 import org.firstinspires.ftc.teamcode.sisteme.Spanzurare;
 import org.firstinspires.ftc.teamcode.sisteme.Usita;
+import org.firstinspires.ftc.teamcode.utilities.PendulManual;
 
 public class robothardware {
     private final OpMode myOpMode;
@@ -54,6 +55,7 @@ public class robothardware {
     public Intake intake;
     public Usita door;
     public PlaneLauncher avion;
+    public PendulManual pendulManual;
 
     public robothardware(OpMode opmode) {myOpMode = opmode;}
 
@@ -83,16 +85,16 @@ public class robothardware {
         pendulare = new Pendulare(pend1, pend2);
         aligner = new Aligner(al1,al2);
         lift = new Ridicare(ridicare1,ridicare2);
-        hanging = new Spanzurare(spanzurare);
+        hanging = new Spanzurare(spanzurare,myOpMode);
         door = new Usita(usa);
         intake = new Intake(intec);
         avion = new PlaneLauncher(plane);
+        pendulManual = new PendulManual(pendulare);
 
         //inversarea directiilor
 //        plane.setDirection(Servo.Direction.REVERSE);
         usa.setDirection(Servo.Direction.REVERSE);
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 //        ridicare2.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //Encodere motoare
@@ -113,7 +115,7 @@ public class robothardware {
         double frontLeftPower = (y + x + rx) / denominator;
         double backLeftPower = (y - x + rx) / denominator;
         double frontRightPower = (y - x - rx) / denominator;
-        double backRightPower = (-y - x + rx) / denominator;
+        double backRightPower = (y + x - rx) / denominator;
 
 
         frontLeft.setPower(frontLeftPower);

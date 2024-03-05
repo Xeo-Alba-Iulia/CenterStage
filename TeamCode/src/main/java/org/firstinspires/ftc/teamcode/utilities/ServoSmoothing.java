@@ -4,7 +4,7 @@ public class ServoSmoothing {
 
     public static double servoSmoothing(double currPos, double targetPos){
         double smoothedPos;
-        smoothedPos = (targetPos*0.05)+(currPos*0.95);
+        smoothedPos = (targetPos*0.07)+(currPos*0.93);
     return smoothedPos;
     }
 }

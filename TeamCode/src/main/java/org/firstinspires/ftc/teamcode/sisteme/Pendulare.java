@@ -16,7 +16,6 @@ public class Pendulare {
     }
 
     public double getPosition() {
-
         return pend1.getPosition();
     }
 }

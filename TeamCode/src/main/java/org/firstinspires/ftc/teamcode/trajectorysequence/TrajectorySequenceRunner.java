@@ -27,6 +27,7 @@ import org.firstinspires.ftc.teamcode.util.LogFiles;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -133,7 +134,7 @@ public class TrajectorySequenceRunner {
                 remainingMarkers.clear();
 
                 remainingMarkers.addAll(currentSegment.getMarkers());
-                Collections.sort(remainingMarkers, (t1, t2) -> Double.compare(t1.getTime(), t2.getTime()));
+                Collections.sort(remainingMarkers, Comparator.comparingDouble(TrajectoryMarker::getTime));
             }
 
             double deltaTime = now - currentSegmentStartTime;
@@ -302,9 +303,5 @@ public class TrajectorySequenceRunner {
 
     public boolean isBusy() {
         return currentTrajectorySequence != null;
-    }
-    public void breakFollowing() {
-        currentTrajectorySequence = null;
-        remainingMarkers.clear();
     }
 }
