@@ -44,7 +44,7 @@ public class robothardware {
     public final double aligner_intake = 0;
 
     //pozitii pendul
-    public final double pendul_outtake = 0.6;
+    public final double pendul_outtake = 0.57;
     public final double pendul_intake = 0.025;
 
     //Obiecte
@@ -92,17 +92,11 @@ public class robothardware {
         pendulManual = new PendulManual(pendulare);
 
         //inversarea directiilor
-//        plane.setDirection(Servo.Direction.REVERSE);
         usa.setDirection(Servo.Direction.REVERSE);
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
-//        ridicare2.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //Encodere motoare
         ridicare1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        spanzurare.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        spanzurare.setTargetPosition(0);
-//        spanzurare.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
     }
 
 

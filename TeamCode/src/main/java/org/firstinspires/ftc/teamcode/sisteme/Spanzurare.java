@@ -26,14 +26,14 @@ public class Spanzurare {
 
         switch (currentHang){
             case DOWN:
-                if(gamepad.right_bumper) {
+                if(gamepad.y) {
                     spanzurare.setTargetPosition(2100);
                     spanzurare.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     spanzurare.setPower(-1);
                     currentHang = HangingState.UP;
                 }
             case UP:
-                if(gamepad.left_bumper) {
+                if(gamepad.x) {
                     spanzurare.setTargetPosition(0);
                     spanzurare.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     spanzurare.setPower(1);

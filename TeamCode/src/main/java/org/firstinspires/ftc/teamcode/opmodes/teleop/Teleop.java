@@ -6,9 +6,9 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.robothardware;
 import org.firstinspires.ftc.teamcode.sisteme.Ridicare;
-import org.firstinspires.ftc.teamcode.utilities.DriveTeleOP;
 import org.firstinspires.ftc.teamcode.utilities.PoseStorage;
 import org.firstinspires.ftc.teamcode.utilities.ServoSmoothing;
 
@@ -18,13 +18,14 @@ import org.firstinspires.ftc.teamcode.utilities.ServoSmoothing;
 public class Teleop extends OpMode {
 
     robothardware robot = new robothardware(this);
-    DriveTeleOP drive;
+    SampleMecanumDrive drive;
 
     //pozitie auxiliara servo smooth
     private double midPos;
 
     //Vector poz avion
     Vector2d VectorAvion;
+    Vector2d constantheading;
 
     //State machine go_to_point in teleop
     enum Mode {
@@ -47,16 +48,22 @@ public class Teleop extends OpMode {
         DOWN1,
         DOWN2
     }
+    enum PendulState{
+        AUTO,
+        MANUAL
+    }
     LiftState currentLiftState = LiftState.INTAKE;
     ServoPos currentServoPos = ServoPos.IDLE;
     Mode currentMode = Mode.DRIVER_CONTROL;
+    PendulState currentPend = PendulState.AUTO;
 
     @Override
     public void init() {
         robot.init();
-        drive = new DriveTeleOP(hardwareMap);
+        drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(PoseStorage.currentPose);
         VectorAvion = new Vector2d(47, 13);
+        constantheading = new Vector2d(gamepad1.left_stick_x,gamepad1.left_stick_y).rotated(0);
         robot.pendulare.setPosition(robot.pendul_intake);
         robot.aligner.setPosition(robot.aligner_intake);
         robot.usa.setPosition(robot.door.usa_intake);
@@ -74,10 +81,10 @@ public class Teleop extends OpMode {
                 robot.door.doorOpening(gamepad1);
                 robot.intake.runIntake(gamepad2);
                 robot.hanging.goToPosHanging(gamepad2);
-                robot.pendulManual.MiscarePendManuala(gamepad2);
+//                robot.pendulManual.MiscarePendManuala(gamepad2);
                 switch (currentLiftState){
                     case INTAKE:
-                        robot.lift.target = 10 /*Ridicare.POS_1*/;
+                        robot.lift.target = Ridicare.POS_1;
                         robot.aligner.setPosition(robot.aligner_intake);
                         if (gamepad2.dpad_left)
                             currentLiftState = LiftState.UP1;
@@ -88,6 +95,16 @@ public class Teleop extends OpMode {
                         break;
                     case UP1:
                         robot.lift.target=Ridicare.POS_2;
+//                        switch (currentPend){
+//                            case AUTO:
+//                                robot.pendulare.setPosition(robot.pendul_outtake);
+//                                if(gamepad2.left_stick_button)
+//                                    currentPend = PendulState.MANUAL;
+//                            case MANUAL:
+//                                robot.pendulManual.MiscarePendManuala(gamepad2);
+//                                if(gamepad2.left_stick_button)
+//                                    currentPend = PendulState.AUTO;
+//                        }
                         robot.pendulare.setPosition(robot.pendul_outtake);
                         robot.aligner.setPosition(robot.aligner_outake);
                         if (gamepad2.dpad_down){
@@ -178,6 +195,7 @@ public class Teleop extends OpMode {
         telemetry.addData("Case Driver Control: ", currentMode);
         telemetry.addData("Case Sisteme: ", currentLiftState);
         telemetry.addData("Case Servo", currentServoPos);
+        telemetry.addData("Case Pendul Manual",currentPend);
         telemetry.addData("Pozitie Hang",robot.spanzurare.getCurrentPosition());
         telemetry.addData("Poitie Lift", robot.lift.getCurrentPosition());
         telemetry.addData("Poitie Pendul", robot.pendulare.getPosition());
