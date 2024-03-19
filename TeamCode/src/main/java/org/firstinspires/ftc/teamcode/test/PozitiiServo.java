@@ -42,12 +42,12 @@ public class PozitiiServo extends LinearOpMode {
 //            dashboardTelemetry.addData("Pozitie Avion", robot.plane.getPosition());
             dashboardTelemetry.addData("Pozitie Usa",robot.usa.getPosition());
             dashboardTelemetry.update();
-//            if (gamepad1.a)
-//                robot.intec.setPower(1);
-//            else if (gamepad2.b)
-//                robot.intec.setPower(-1);
-//            else
-//                robot.intec.setPower(0);
+            if (gamepad1.a)
+                robot.intec.setPower(1);
+            else if (gamepad2.b)
+                robot.intec.setPower(-1);
+            else
+                robot.intec.setPower(0);
 
         }
     }

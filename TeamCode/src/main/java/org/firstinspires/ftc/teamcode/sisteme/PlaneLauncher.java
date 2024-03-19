@@ -13,8 +13,8 @@ public class PlaneLauncher {
     }
 
     public void PlaneLaunching(Gamepad gamepad) {
-        if(gamepad.y)
-            plane.setPosition(avion_armat);
+        if(gamepad.a)
+            plane.setPosition(avion_dezarmat);
     }
 
     public double getPosition() {

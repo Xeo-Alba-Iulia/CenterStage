@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.robothardware;
 
 public class Spanzurare {
     DcMotor spanzurare;
-    enum HangingState{
+    public enum HangingState{
     UP,
     DOWN
     }

@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.ochi.pipelines.TGERecognition_blue;
 import org.firstinspires.ftc.teamcode.robothardware;
 import org.firstinspires.ftc.teamcode.sisteme.Ridicare;
 import org.firstinspires.ftc.teamcode.utilities.PoseStorage;
+import org.firstinspires.ftc.teamcode.utilities.ServoSmoothing;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -26,8 +27,29 @@ public class albastruAproape extends OpMode {
     TGERecognition_blue.TGEPosition snapshotAnlysis;
 
     SampleMecanumDrive drive;
+    private double midPos;
+
+
 
     int caz = 0;
+    Trajectory spikemark;
+    Trajectory spikemarkspate;
+    Trajectory heading_align;
+    Trajectory backdrop_align;
+    Trajectory backdrop_fata;
+    Trajectory parcare_align;
+    Trajectory parcare;
+
+    enum caseState{
+        STANGA,
+        MIJLOC,
+        DREAPTA
+    }
+    enum ServoPos{
+        IN_PROGRESS,
+        IDLE
+    }
+
 
     enum trajState {
         SPIKEMARK,
@@ -37,31 +59,18 @@ public class albastruAproape extends OpMode {
         BACKDROP_ALIGN,
         PARCARE_ALIGN,
         PARCARE,
+        FATA_BACKDROP,
         IDLE
     }
     Pose2d startPose = new Pose2d(12, 60, Math.toRadians(270));
 
-    Trajectory spikemark = drive.trajectoryBuilder(startPose)
-            .lineToLinearHeading(new Pose2d(13, 35, Math.toRadians(360-30)))
-            .build();
-    Trajectory spikemarkspate = drive.trajectoryBuilder(spikemark.end())
-            .back(3)
-            .build();
 
-    Trajectory heading_align = drive.trajectoryBuilder(spikemarkspate.end())
-            .lineToLinearHeading(new Pose2d(24,60,Math.toRadians(180)))
-            .build();
-    Trajectory backdrop_align = drive.trajectoryBuilder(heading_align.end())
-            .lineToLinearHeading(new Pose2d(46,40,Math.toRadians(180)))
-            .build();
-    Trajectory parcare_align = drive.trajectoryBuilder(backdrop_align.end())
-            .strafeRight(19)
-            .build();
-    Trajectory parcare = drive.trajectoryBuilder(parcare_align.end())
-            .build();
 
+    caseState cazState = caseState.STANGA;
     trajState currentState = trajState.SPIKEMARK;
-    robothardware robot = new robothardware(this);
+    ServoPos currentServoPos = ServoPos.IDLE;
+
+    robothardware robot;
 
 
     @Override
@@ -70,10 +79,37 @@ public class albastruAproape extends OpMode {
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         pipeline = new TGERecognition_blue();
         webcam.setPipeline(pipeline);
-        drive = new SampleMecanumDrive(hardwareMap);
+        robot = new robothardware(this);
         robot.init();
+        drive = new SampleMecanumDrive(hardwareMap);
+        drive.setPoseEstimate(startPose);
+        robot.pendulare.setPosition(robot.pendul_intake);
+        robot.aligner.setPosition(robot.aligner_intake);
+        robot.usa.setPosition(robot.door.usa_intake);
 
+        spikemark = drive.trajectoryBuilder(startPose)
+                .lineToLinearHeading(new Pose2d(16, 35, Math.toRadians(270+40)))
+                .build();
+        spikemarkspate = drive.trajectoryBuilder(spikemark.end())
+                .back(5)
+                .build();
 
+        heading_align = drive.trajectoryBuilder(spikemarkspate.end())
+                .lineToLinearHeading(new Pose2d(24,50,Math.toRadians(180)))
+                .build();
+        backdrop_align = drive.trajectoryBuilder(heading_align.end())
+                .lineToLinearHeading(new Pose2d(46,35,Math.toRadians(180)))
+                .build();
+        backdrop_fata = drive.trajectoryBuilder(backdrop_align.end())
+                .forward(15)
+                .build();
+
+        parcare_align = drive.trajectoryBuilder(backdrop_fata.end())
+                .strafeRight(24)
+                .build();
+        parcare = drive.trajectoryBuilder(parcare_align.end())
+                .back(2)
+                .build();
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -90,7 +126,47 @@ public class albastruAproape extends OpMode {
 
     }
     public void init_loop(){
-        drive.followTrajectoryAsync(spikemark);
+        snapshotAnlysis = pipeline.getAnalysis();
+        switch (snapshotAnlysis) {
+
+            case LEFT: {
+//                cazState = caseState.STANGA;
+//                telemetry.addLine("stanga");
+                break;
+            }
+
+            case RIGHT: {
+
+//            telemetry.addLine("Dreapta");
+//                cazState = caseState.DREAPTA;
+
+                spikemark= drive.trajectoryBuilder(startPose)
+                        .lineToLinearHeading(new Pose2d(7, 30, Math.toRadians(200)))
+                        .build();
+                spikemarkspate = drive.trajectoryBuilder(spikemark.end())
+                        .back(5)
+                        .build();
+                backdrop_align = drive.trajectoryBuilder(heading_align.end())
+                        .lineToLinearHeading(new Pose2d(46,25,Math.toRadians(180)))
+                        .build();
+                break;
+            }
+
+            case CENTER: {
+//                cazState = caseState.MIJLOC;
+//                telemetry.addLine("mij");
+                spikemark = drive.trajectoryBuilder(startPose)
+                        .lineToLinearHeading(new Pose2d(12, 29, Math.toRadians(270)))
+                        .build();
+                spikemarkspate = drive.trajectoryBuilder(spikemark.end())
+                        .back(5)
+                        .build();
+                backdrop_align = drive.trajectoryBuilder(heading_align.end())
+                        .lineToLinearHeading(new Pose2d(46,28,Math.toRadians(180)))
+                        .build();
+                break;
+            }
+        }
         telemetry.addData("Cazul",pipeline.getAnalysis());
         telemetry.update();
     }
@@ -101,75 +177,117 @@ public class albastruAproape extends OpMode {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        snapshotAnlysis = pipeline.getAnalysis();
+        drive.followTrajectoryAsync(spikemark);
 
-        switch (snapshotAnlysis) {
-
-            case LEFT: {
-                telemetry.addLine("Stanga");
-
-                switch (currentState) {
-                    case SPIKEMARK:
-                        if(!drive.isBusy()){
-                            currentState= trajState.SPATE_SPIKEMARK_SCURT;
-                            drive.followTrajectoryAsync(spikemarkspate);
-                        }
-                        break;
-                    case SPATE_SPIKEMARK_SCURT:
-                        if(!drive.isBusy()){
-                            currentState= trajState.HEADING_ALIGN;
-                            drive.followTrajectoryAsync(heading_align);
-                        }
-                    case HEADING_ALIGN:
-                        if(!drive.isBusy()){
-                            currentState= trajState.BACKDROP_ALIGN;
-                            drive.followTrajectoryAsync(backdrop_align);
-                        }
-                    case BACKDROP_ALIGN:
-                        robot.lift.target = Ridicare.POS_2;
-                        robot.pendulare.setPosition(robot.pendul_outtake);
-                        robot.aligner.setPosition(robot.aligner_outake);
-                        if(!drive.isBusy()){
-                            robot.usa.setPosition(robot.door.usa_outtake);
-                            currentState= trajState.PARCARE_ALIGN;
-                            drive.followTrajectoryAsync(parcare_align);
-                        }
-                    case PARCARE_ALIGN:
-                        if(!drive.isBusy()){
-                            currentState= trajState.PARCARE;
-                            drive.followTrajectoryAsync(parcare);
-                        }
-                    case PARCARE:
-                        if(!drive.isBusy()){
-                            currentState= trajState.IDLE;
-                        }
-                }
-
-                break;
-            }
-
-            case RIGHT: {
-                Pose2d offset = new Pose2d(12, 60, Math.toRadians(270));
-                drive.setPoseEstimate(offset);
-
-
-                telemetry.addData("Cazul",snapshotAnlysis );
-                break;
-            }
-
-            case CENTER: {
-                Pose2d offset = new Pose2d(12, 60, Math.toRadians(270));
-                drive.setPoseEstimate(offset);
-
-                telemetry.addLine("Centru");
-                break;
-            }
-        }
-        PoseStorage.currentPose = drive.getPoseEstimate();
     }
     @Override
     public void loop() {
+
+        switch (currentState) {
+                    case SPIKEMARK:
+//                robot.lift.target = 200;
+//                robot.usa.setPosition(0.1);
+                        if (!drive.isBusy()) {
+                            robot.intec.setPower(-0.4);
+                            currentState = trajState.SPATE_SPIKEMARK_SCURT;
+                            drive.followTrajectoryAsync(spikemarkspate);
+                            break;
+                        }
+                    case SPATE_SPIKEMARK_SCURT:
+                        if (!drive.isBusy()) {
+                            robot.intec.setPower(0);
+                            currentState = trajState.HEADING_ALIGN;
+                            drive.followTrajectoryAsync(heading_align);
+                        }
+                        break;
+                    case HEADING_ALIGN:
+                        if (!drive.isBusy()) {
+                            robot.lift.target = Ridicare.POS_2;
+                            robot.pendulare.setPosition(robot.pendul_outtake);
+                            robot.aligner.setPosition(robot.aligner_outake);
+                            currentState = trajState.BACKDROP_ALIGN;
+                            drive.followTrajectoryAsync(backdrop_align);
+                            currentServoPos = ServoPos.IN_PROGRESS;
+
+                        }
+                        break;
+                    case BACKDROP_ALIGN:
+
+                        if (!drive.isBusy()) {
+                            robot.usa.setPosition(robot.door.usa_outtake);
+                            currentState= trajState.FATA_BACKDROP;
+                            drive.followTrajectoryAsync(backdrop_fata);
+                            midPos = robot.pendulare.getPosition();
+
+
+                        }
+
+                        break;
+                    case FATA_BACKDROP:
+
+                        if(!drive.isBusy()) {
+
+//                            switch (currentServoPos){
+//
+//                                case IDLE:
+////                                    midPos= robot.pendulare.getPosition();
+//                                    break;
+//                                case IN_PROGRESS:
+//                                    robot.pendulare.setPosition(ServoSmoothing.servoSmoothing(midPos, robot.pendul_intake));
+//                                    if(Math.abs(robot.pendulare.getPosition() - robot.pendul_intake)<0.005) {
+//                                        robot.pendulare.setPosition(robot.pendul_intake);
+//                                        currentServoPos = ServoPos.IDLE;
+//                                    }
+//                                    else {
+//                                        midPos = robot.pendulare.getPosition();
+//                                    }
+//                                    break;
+//                            }
+
+                            drive.followTrajectoryAsync(parcare_align);
+                            currentState= trajState.PARCARE_ALIGN;
+                        }
+                        switch (currentServoPos){
+
+                            case IDLE:
+//                                    midPos= robot.pendulare.getPosition();
+                                break;
+                            case IN_PROGRESS:
+                                robot.usa.setPosition(robot.door.usa_intake);
+                                robot.aligner.setPosition(robot.aligner_intake);
+
+                                robot.pendulare.setPosition(ServoSmoothing.servoSmoothing(midPos, robot.pendul_intake));
+                                if(Math.abs(robot.pendulare.getPosition() - robot.pendul_intake)<0.005) {
+                                    robot.pendulare.setPosition(robot.pendul_intake);
+                                    currentServoPos = ServoPos.IDLE;
+                                }
+                                else {
+                                    midPos = robot.pendulare.getPosition();
+                                }
+                                break;
+                        }
+
+                        break;
+                    case PARCARE_ALIGN:
+                        if (!drive.isBusy()) {
+                            currentState = trajState.PARCARE;
+                            drive.followTrajectoryAsync(parcare);
+//                            drive.followTrajectoryAsync(parcare); w
+                        }
+                        break;
+                    case PARCARE:
+                        if(drive.isBusy()) {
+                            currentState = trajState.IDLE;
+                        }
+                         break;
+                    case IDLE:
+                        break;
+                }
         drive.update();
+                telemetry.addData("CaseTraj",currentState);
+//                telemetry.addData("Traj",drive.)
+        PoseStorage.currentPose = drive.getPoseEstimate();
+
     }
 
 }

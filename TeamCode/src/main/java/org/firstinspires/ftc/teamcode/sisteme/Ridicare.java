@@ -12,7 +12,7 @@ public class Ridicare {
     //pozitii ridicare
     public static final int POS_1 = 0; //0
     public static final int POS_2 = 230; //230
-    public static final int POS_3 = 814; // 2100
+    public static final int POS_3 = 1100; // 2100
     public static final int POS_4 = 2000; //230
 
     public int target;
@@ -24,10 +24,6 @@ public class Ridicare {
         controller = new PIDController(0.01, 0, 0);
     }
 
-    /**
-     * Give power to both lift motors
-     * @param power power given to both motors
-     */
     public void setPower(double power) {
         ridicare1.setPower(power);
         ridicare2.setPower(power);

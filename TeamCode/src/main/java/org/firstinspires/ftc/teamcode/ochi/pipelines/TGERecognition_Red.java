@@ -48,8 +48,8 @@ public class TGERecognition_Red extends OpenCvPipeline {
         Imgproc.cvtColor(input, HSV, Imgproc.COLOR_RGB2HSV);
     }
 
-    public Scalar TGEColorMin = new Scalar(110, 103, 80);
-    public Scalar TGEColorMax = new Scalar(130, 175, 133);
+    public Scalar TGEColorMin = new Scalar(1, 110, 159);
+    public Scalar TGEColorMax = new Scalar(21, 238, 255);
 
 
 
@@ -115,6 +115,8 @@ public class TGERecognition_Red extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
         inputToHSV(input);
+        Core.flip(HSV,HSV,0);
+        Core.flip(HSV,HSV,1);
 
         Imgproc.rectangle(
                 HSV, // Buffer to draw on
@@ -178,8 +180,9 @@ public class TGERecognition_Red extends OpenCvPipeline {
 //        Imgproc.rectangle(HSV, rightRect, new Scalar(0, 0, 250), 3);
 //        Imgproc.rectangle(HSV, middletRect, new Scalar(0, 0, 250), 3);
 //        Imgproc.rectangle(HSV, leftRect, new Scalar(0,250, 0), 3);
-
-
+        Core.flip(redMask,redMask,1);
+        Core.flip(redMask,redMask,1);
+//
 
         if(max == avg1)
         {
@@ -202,7 +205,7 @@ public class TGERecognition_Red extends OpenCvPipeline {
             Imgproc.rectangle(HSV, region3_pointA,region3_pointB,new Scalar(250,0,0),3);
         }
 
-        return HSV;
+        return redMask;
     }
 
 }

@@ -50,7 +50,7 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
     private Encoder parallelEncoder, perpendicularEncoder;
 
     private SampleMecanumDrive drive;
-    public static double X_MULTIPLIER = 1.02; // Multiplier in the X direction
+    public static double X_MULTIPLIER = 1.01; // Multiplier in the X direction
     public static double Y_MULTIPLIER = 1.006;
 
     public TwoWheelTrackingLocalizer(HardwareMap hardwareMap, SampleMecanumDrive drive) {

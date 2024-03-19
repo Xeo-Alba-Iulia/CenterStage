@@ -48,18 +48,20 @@ public class TGERecognition_blue extends OpenCvPipeline {
         Imgproc.cvtColor(input, HSV, Imgproc.COLOR_RGB2HSV);
     }
 
-    public Scalar TGEColorMin = new Scalar(110, 103, 80);
-    public Scalar TGEColorMax = new Scalar(130, 175, 132);
+    public Scalar TGEColorMin = new Scalar(83, 82, 34);
+    public Scalar TGEColorMax = new Scalar(121, 204, 120);
 
 
 
 
-    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(520,200);
-    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(280,130);
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(40,170);
+    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(520,220);//520 220
+    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(280,140);//265 180
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(40,170);//40 170
     static final int REGION_WIDTH = 110;
-    static final int REGION_HEIGHT = 200;
-    static final Scalar GREEN = new Scalar(0, 255, 0);
+    static final int REGION_HEIGHT = 170;
+    static final Scalar GREEN = new Scalar(255, 0, 0);
+    static final Scalar RED = new Scalar(255, 255, 0);
+
 
     /*
      * Points which actually define the sample region rectangles, derived from above values
@@ -105,6 +107,7 @@ public class TGERecognition_blue extends OpenCvPipeline {
     @Override
     public void init(Mat firstFrame)
     {
+
         inputToHSV(firstFrame);
 
 
@@ -114,7 +117,14 @@ public class TGERecognition_blue extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
+
         inputToHSV(input);
+        Core.flip(HSV,HSV,0);
+        Core.flip(HSV,HSV,1);
+
+
+
+
 
         Imgproc.rectangle(
                 HSV, // Buffer to draw on
@@ -131,7 +141,7 @@ public class TGERecognition_blue extends OpenCvPipeline {
                 HSV, // Buffer to draw on
                 region2_pointA, // First point which defines the rectangle
                 region2_pointB, // Second point which defines the rectangle
-                GREEN, // The color the rectangle is drawn in
+                RED, // The color the rectangle is drawn in
                 2); // Thickness of the rectangle lines
 
         /*
@@ -171,6 +181,8 @@ public class TGERecognition_blue extends OpenCvPipeline {
             telemetry.addData("AVERAGE 3", Core.mean(region3_hsv).val[0]);
             telemetry.update();
         }
+        Core.flip(blueMask,blueMask,1);
+        Core.flip(blueMask,blueMask,1);
 
 
 //        System.out.println("aici");

@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.sisteme.Usita;
 import org.firstinspires.ftc.teamcode.utilities.PendulManual;
 
 public class robothardware {
-    private final OpMode myOpMode;
+    public final OpMode myOpMode;
     //motoare sasiu
     public DcMotorEx frontLeft;
     public DcMotorEx frontRight;
@@ -40,12 +40,12 @@ public class robothardware {
     public ServoImplEx pend2;
 
     //pozitii aligner caseta
-    public final double aligner_outake = 0.75;
+    public final double aligner_outake = 0.81;
     public final double aligner_intake = 0;
 
     //pozitii pendul
-    public final double pendul_outtake = 0.57;
-    public final double pendul_intake = 0.025;
+    public final double pendul_outtake = 0.68;
+    public final double pendul_intake = 0.03;
 
     //Obiecte
     public Spanzurare hanging;
@@ -77,7 +77,7 @@ public class robothardware {
         usa = myOpMode.hardwareMap.servo.get("Usa");
         al1 = myOpMode.hardwareMap.get(ServoImplEx.class, "Aligner1");//caseta
         al2 = myOpMode.hardwareMap.get(ServoImplEx.class, "Aligner2");
-//        plane = myOpMode.hardwareMap.servo.get("Avion");
+        plane = myOpMode.hardwareMap.servo.get("Avion");
         pend1 = myOpMode.hardwareMap.get(ServoImplEx.class, "Pendul1");
         pend2 = myOpMode.hardwareMap.get(ServoImplEx.class,"Pendul2");
 
@@ -94,6 +94,8 @@ public class robothardware {
         //inversarea directiilor
         usa.setDirection(Servo.Direction.REVERSE);
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+//        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //Encodere motoare
         ridicare1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -111,11 +113,17 @@ public class robothardware {
         double frontRightPower = (y - x - rx) / denominator;
         double backRightPower = (y + x - rx) / denominator;
 
-
+        if(gamepad1.left_trigger!=0){
+            frontLeftPower*=0.35;
+            frontRightPower*=0.35;
+            backLeftPower*=0.35;
+            backRightPower*=0.35;
+        }
         frontLeft.setPower(frontLeftPower);
         backLeft.setPower(backLeftPower);
         frontRight.setPower(frontRightPower);
         backRight.setPower(backRightPower);
+
 
     }
 }
