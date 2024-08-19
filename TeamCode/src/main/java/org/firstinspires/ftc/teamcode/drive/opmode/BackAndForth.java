@@ -28,7 +28,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 @Autonomous(group = "drive")
 public class BackAndForth extends LinearOpMode {
 
-    public static double DISTANCE = 50;
+    public static double DISTANCE = 10;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -38,16 +38,16 @@ public class BackAndForth extends LinearOpMode {
                 .forward(DISTANCE)
                 .build();
 
-        Trajectory trajectoryBackward = drive.trajectoryBuilder(trajectoryForward.end())
+        Trajectory trajectoryBackward = drive.trajectoryBuilder(new Pose2d())
                 .back(DISTANCE)
                 .build();
 
         waitForStart();
 
         while (opModeIsActive() && !isStopRequested()) {
-            sleep(500);
+            sleep(2000);
             drive.followTrajectory(trajectoryForward);
-            sleep(500);
+            sleep(2000);
             drive.followTrajectory(trajectoryBackward);
         }
     }
