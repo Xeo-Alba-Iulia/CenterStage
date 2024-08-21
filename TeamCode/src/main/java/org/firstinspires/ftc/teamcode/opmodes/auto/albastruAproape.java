@@ -26,19 +26,14 @@ public class albastruAproape extends OpMode {
     TGERecognition_blue pipeline;
     TGERecognition_blue.TGEPosition snapshotAnlysis;
 
-    SampleMecanumDrive drive;
+    protected SampleMecanumDrive drive;
     private double midPos;
 
 
 
     int caz = 0;
-    Trajectory spikemark;
-    Trajectory spikemarkspate;
-    Trajectory heading_align;
-    Trajectory backdrop_align;
-    Trajectory backdrop_fata;
-    Trajectory parcare_align;
-    Trajectory parcare;
+    protected Trajectory spikemark, spikemarkspate, heading_align, backdrop_align,
+            backdrop_fata, parcare_align, parcare;
 
     enum caseState{
         STANGA,
@@ -62,15 +57,15 @@ public class albastruAproape extends OpMode {
         FATA_BACKDROP,
         IDLE
     }
-    Pose2d startPose = new Pose2d(12, 60, Math.toRadians(270));
+    protected Pose2d startPose = new Pose2d(12, 60, Math.toRadians(270));
 
 
 
-    caseState cazState = caseState.STANGA;
-    trajState currentState = trajState.SPIKEMARK;
-    ServoPos currentServoPos = ServoPos.IDLE;
+    protected caseState cazState = caseState.STANGA;
+    protected trajState currentState = trajState.SPIKEMARK;
+    protected ServoPos currentServoPos = ServoPos.IDLE;
 
-    robothardware robot;
+    protected robothardware robot;
 
 
     @Override
