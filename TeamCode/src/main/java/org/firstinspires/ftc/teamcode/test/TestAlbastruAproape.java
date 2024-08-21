@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.test;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.opmodes.auto.albastruAproape;
 import org.firstinspires.ftc.teamcode.robothardware;
 
-@Autonomous(group = "Test", name = "TestAproapeAlbastru")
+@TeleOp(name = "Test Albastru Aproape", group = "Tests")
 public class TestAlbastruAproape extends albastruAproape {
     @Override
     public void init() {

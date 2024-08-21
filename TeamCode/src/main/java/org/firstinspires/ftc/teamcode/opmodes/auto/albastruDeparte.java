@@ -26,23 +26,18 @@ public class albastruDeparte extends OpMode {
     TGERecognition_blue pipeline;
     TGERecognition_blue.TGEPosition snapshotAnlysis;
 
-    SampleMecanumDrive drive;
+    protected SampleMecanumDrive drive;
     private double midPos;
 
 
 
     int caz = 0;
-    Trajectory spikemark;
-    Trajectory spikemarkspate;
-    TrajectorySequence heading_align;
-    Trajectory stagedoor1;
-    Trajectory stagedoor2;
-    Trajectory backdrop_align;
-    Trajectory backdrop_fata;
-    Trajectory park_align;
-    Trajectory park;
+    protected Trajectory spikemark, spikemarkspate, stagedoor1, stagedoor2,
+            backdrop_align, backdrop_fata, park_align, park;
 
-    enum caseState{
+    protected TrajectorySequence heading_align;
+
+    protected enum caseState{
         STANGA,
         MIJLOC,
         DREAPTA
@@ -65,7 +60,7 @@ public class albastruDeparte extends OpMode {
         PARK,
         IDLE
     }
-    Pose2d startPose = new Pose2d(-38,60,Math.toRadians(270));
+    protected Pose2d startPose = new Pose2d(-38,60,Math.toRadians(270));
 
 
 
@@ -73,7 +68,7 @@ public class albastruDeparte extends OpMode {
     trajState currentState = trajState.SPIKEMARK;
     ServoPos currentServoPos = ServoPos.IDLE;
 
-    robothardware robot;
+    protected robothardware robot;
 
 
     @Override
