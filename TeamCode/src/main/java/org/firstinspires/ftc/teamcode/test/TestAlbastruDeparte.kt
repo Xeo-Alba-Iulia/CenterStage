@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.opmodes.auto.albastruDeparte
 import org.firstinspires.ftc.teamcode.robothardware
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence
+import java.util.EnumMap
 
 @TeleOp(name = "Test Albastru Departe", group = "Tests")
 class TestAlbastruDeparte : albastruDeparte() {
@@ -44,6 +45,7 @@ class TestAlbastruDeparte : albastruDeparte() {
             .build()
     }
 
+    @Suppress("KDocUnresolvedReference")
     override fun init_loop() {
         posGameObj = when {
             gamepad1.dpad_left -> caseState.STANGA
@@ -51,10 +53,13 @@ class TestAlbastruDeparte : albastruDeparte() {
             gamepad1.dpad_up || gamepad1.dpad_down -> caseState.MIJLOC
             else -> posGameObj
         }
-
-        // trajectoryMap[posGameObj] are intotdeuna valoare fiindca acopera toate cazurile
-        // enum-ului caseState (operator-ul !! ignora eroarea de compilare)
-        val (spikemark, spikemarkspate, heading_align) = trajectoryMap[posGameObj]!!
+        telemetry.addData("Pozitie obiect de joc", posGameObj)
+        /**
+         * `trajectoryMap[posGameObj]` este intotdeuna NonNull
+         *
+         * Vezi [Operator !!](https://kotlinlang.org/docs/null-safety.html#the-operator)
+         */
+         val (spikemark, spikemarkspate, heading_align) = trajectoryMap[posGameObj]!!
 
         this.spikemark = spikemark as Trajectory
         this.spikemarkspate = spikemarkspate as Trajectory
@@ -66,11 +71,11 @@ class TestAlbastruDeparte : albastruDeparte() {
     /**
      * Map de traiectorii pentru pozitia elementului de joc
      *
-     * Folosita in init_loop din test pentru a testa toate pozitiile
+     * Folosita in init_loop din test pentru a facilita testarea tuturor pozitiilor posibile
      *
-     * Foloseste doar traiectoriile din autonomia originala pentru a nu schimba structura ei
+     * Traiectoriile sunt identice cu cele din [albastruDeparte]
      */
-    private val trajectoryMap = mapOf(
+    private val trajectoryMap = EnumMap(mapOf(
         caseState.STANGA to arrayOf(
             drive.trajectoryBuilder(startPose)
                 .lineToLinearHeading(Pose2d(-32.0, 30.0, Math.toRadians((360 - 30).toDouble())))
@@ -105,5 +110,5 @@ class TestAlbastruDeparte : albastruDeparte() {
                 .lineToLinearHeading(Pose2d(-45.0, 10.0, Math.toRadians(180.0)))
                 .build()
         )
-    )
+    ))
 }
