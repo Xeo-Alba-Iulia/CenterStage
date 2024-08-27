@@ -1,5 +1,3 @@
-@file:Suppress("SpellCheckingInspection")
-
 package org.firstinspires.ftc.teamcode.test
 
 import com.acmerobotics.roadrunner.geometry.Pose2d
@@ -10,16 +8,8 @@ import org.firstinspires.ftc.teamcode.robothardware
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence
 import java.util.EnumMap
 
-/**
- * Test pentru scenariul autonom [Albastru Departe][albastruDeparte]
- *
- * Testeaza traiectoriile (fara camera) pentru pornirea din spate in alianta albastra
- */
 @TeleOp(name = "Test Albastru Departe", group = "Tests")
 class TestAlbastruDeparte : albastruDeparte() {
-    /**
-     * Initializarea normala fara camere
-     */
     override fun init() {
         robot = robothardware(this)
         robot.init()
@@ -55,9 +45,6 @@ class TestAlbastruDeparte : albastruDeparte() {
             .build()
     }
 
-    /**
-     * Seteaza traiectoria din dpad controller
-     */
     @Suppress("KDocUnresolvedReference")
     override fun init_loop() {
         posGameObj = when {
