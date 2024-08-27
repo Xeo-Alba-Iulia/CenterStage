@@ -10,8 +10,8 @@ public class Aligner {
     }
 
     public void setPosition(double position) {
-        al1.setPosition(position);
-        al2.setPosition(position);
+        al1.setPosition(-position);
+        al2.setPosition(-position);
     }
 
     public double getPosition() {
