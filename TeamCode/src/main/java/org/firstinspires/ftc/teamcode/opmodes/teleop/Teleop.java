@@ -135,7 +135,6 @@ public class Teleop extends OpMode {
 
                 switch (currentLiftState){
                     case INTAKE:
-                        robot.lift.target = Ridicare.POS_1;
                         robot.aligner.setPosition(robot.aligner_intake);
                         if (gamepad2.dpad_left){
                             currentLiftState = LiftState.UP1;
@@ -145,13 +144,12 @@ public class Teleop extends OpMode {
                             currentLiftState = LiftState.UP2;
                             currentPend= PendulState.AUTO;
                         }
-                        else if (gamepad2.dpad_right){
+                        else if (gamepad2.dpad_down){
                             currentLiftState = LiftState.UP3;
                             currentPend= PendulState.AUTO;
                         }
                         break;
                     case UP1:
-                        robot.lift.target=Ridicare.POS_2;
                         switch (currentPend){
                             case AUTO:
                                 robot.pendulare.setPosition(robot.pendul_outtake);
@@ -164,7 +162,7 @@ public class Teleop extends OpMode {
                                     currentPend = PendulState.AUTO;
                         }
                         robot.aligner.setPosition(robot.aligner_outake);
-                        if (gamepad2.dpad_down){
+                        if (gamepad2.dpad_right){
                             currentLiftState = LiftState.DOWN1;
                             currentServoPos = ServoPos.IN_PROGRESS;
                             currentPend= PendulState.AUTO;
@@ -173,25 +171,13 @@ public class Teleop extends OpMode {
                             currentLiftState = LiftState.UP2;
                             currentPend= PendulState.AUTO;
                         }
-                        else if (gamepad2.dpad_right){
+                        else if (gamepad2.dpad_down){
                             currentLiftState = LiftState.UP3;
                             currentPend= PendulState.AUTO;
                         }
                         break;
                     case UP2:
-                        robot.lift.target=Ridicare.POS_3;//trb masurat cu encoderu
-                        switch (currentPend){
-                            case AUTO:
-                                robot.pendulare.setPosition(robot.pendul_outtake);
-                                if(gamepad2.left_stick_button)
-                                    currentPend = PendulState.MANUAL;
-                            case MANUAL:
-                                robot.pendulManual.MiscarePendManuala(gamepad2);
-                                if(gamepad2.right_stick_button)
-                                    currentPend = PendulState.AUTO;
-                        }
-                        robot.aligner.setPosition(robot.aligner_outake);
-                        if (gamepad2.dpad_down){
+                        if (gamepad2.dpad_right){
                             currentLiftState = LiftState.DOWN1;
                             currentServoPos = ServoPos.IN_PROGRESS;
                         }
@@ -199,25 +185,14 @@ public class Teleop extends OpMode {
                             currentLiftState = LiftState.UP1;
                             currentPend= PendulState.AUTO;
                         }
-                        else if (gamepad2.dpad_right){
+                        else if (gamepad2.dpad_down){
                             currentLiftState = LiftState.UP3;
                             currentPend= PendulState.AUTO;
                         }
                         break;
                     case UP3:
-                        robot.lift.target=Ridicare.POS_4;//trb masurat cu encoderu
-                        switch (currentPend){
-                            case AUTO:
-                                robot.pendulare.setPosition(robot.pendul_outtake);
-                                if(gamepad2.left_stick_button)
-                                    currentPend = PendulState.MANUAL;
-                            case MANUAL:
-                                robot.pendulManual.MiscarePendManuala(gamepad2);
-                                if(gamepad2.right_stick_button)
-                                    currentPend = PendulState.AUTO;
-                        }                        robot.aligner.setPosition(robot.aligner_outake);
 
-                        if (gamepad2.dpad_down){
+                        if (gamepad2.dpad_right){
                             currentLiftState = LiftState.DOWN1;
                             currentServoPos = ServoPos.IN_PROGRESS;
                         }
